@@ -1,4 +1,5 @@
 const User = require("../model/User");
+const bcrypt = require('bcrypt');
 
 const getAllUser = async (req, res) => {
   const users = await User.find();
@@ -7,11 +8,14 @@ const getAllUser = async (req, res) => {
 };
 
 const createNewUser = async (req, res) => {
-  const { user, pwd } = req.body;
-  if (!user || !pwd)
+  const {name, user, pwd } = req.body;
+  // const name = req.body.fullName;
+  // const user = req.body.username;
+  // const pwd = req.body.password;
+  if (!user || !pwd || !name)
     return res
       .status(400)
-      .json({ message: "Username and pawssword are required" });
+      .json({ message: "Name, username and pawssword are required" });
   const duplicate = await User.findOne({ username: user }).exec();
   if (duplicate) return res.sendStatus(409); //conflict
 
@@ -19,6 +23,7 @@ const createNewUser = async (req, res) => {
     //encrypt the password
     const hashedPwd = await bcrypt.hash(pwd, 10);
     const result = await User.create({
+      fullName: name,
       username: user,
       password: hashedPwd,
     });
