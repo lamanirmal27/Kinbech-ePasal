@@ -9,9 +9,6 @@ const getAllUser = async (req, res) => {
 
 const createNewUser = async (req, res) => {
   const {name, user, pwd } = req.body;
-  // const name = req.body.fullName;
-  // const user = req.body.username;
-  // const pwd = req.body.password;
   if (!user || !pwd || !name)
     return res
       .status(400)
