@@ -89,4 +89,22 @@
     flex-direction: column;
     justify-content: center;
   }
-  
+
+  .input-group{
+    position: relative;
+    display: flex;
+    align-items: center;
+  }
+
+  .valid-icon {
+    position: absolute;
+    right: 10px;
+    color: green;
+  }
+
+  .invalid-icon{
+    position: absolute;
+    right: 10px;
+    color: red;
+  }
+

@@ -2,7 +2,13 @@ import "./styles.css";
 import { Link, useAsyncError } from "react-router-dom";
 import axios from "../../api/axios";
 import { useEffect, useRef, useState } from "react";
-import toast from 'react-hot-toast';
+import toast from "react-hot-toast";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import {
+  faCheckCircle,
+  faTimesCircle,
+} from "@fortawesome/free-solid-svg-icons";
+
 const userUrl = "/user";
 const NAMEREGEX = /^(?!.*\d)(?!.*[^a-zA-Z\s]).{6,}$/;
 const USERREGEX = /^(?![A-Z])\S{6,}$/;
@@ -12,9 +18,11 @@ function Register() {
 
   const [name, setName] = useState("");
   const [validName, setValidName] = useState(false);
+  const [nameFocus, setNameFocus] = useState(false);
 
   const [user, setUser] = useState("");
   const [validUser, setValidUser] = useState(false);
+  const [userFocus, setUserFocus] = useState(false);
 
   const [pwd, setPwd] = useState("");
 
@@ -44,7 +52,12 @@ function Register() {
           withCredentials: true,
         }
       );
-      toast.success('Registration Success');
+      toast.success("Registration Success");
+      setName("");
+      setUser("");
+      setPwd("");
+      setNameFocus(false);
+      setUserFocus(false);
     } catch (err) {
       if (!err?.response) {
         toast.error("No response from server");
@@ -65,25 +78,50 @@ function Register() {
         <span className="title">Sign up</span>
         <span className="subtitle">Create a account </span>
         <div className="form-container">
-          <input
-            ref={userRef}
-            type="text"
-            className="input"
-            placeholder="Full Name"
-            value={name}
-            autoComplete="off"
-            onChange={(e) => setName(e.target.value)}
-            required
-          />
-          <input
-            type="text"
-            className="input"
-            placeholder="Username"
-            value={user}
-            onChange={(e) => setUser(e.target.value)}
-            autoComplete="off"
-            required
-          />
+          <div className="input-group">
+            <input
+              ref={userRef}
+              type="text"
+              className="input"
+              placeholder="Full Name"
+              value={name}
+              autoComplete="off"
+              onChange={(e) => setName(e.target.value)}
+              onFocus={() => setNameFocus(true)}
+              required
+            />
+            {nameFocus &&
+              (validName ? (
+                <FontAwesomeIcon icon={faCheckCircle} className="valid-icon" />
+              ) : (
+                <FontAwesomeIcon
+                  icon={faTimesCircle}
+                  className="invalid-icon"
+                />
+              ))}
+          </div>
+
+          <div className="input-group">
+            <input
+              type="text"
+              className="input"
+              placeholder="Username"
+              value={user}
+              onChange={(e) => setUser(e.target.value)}
+              autoComplete="off"
+              onFocus={() => setUserFocus(true)}
+              required
+            />
+            {userFocus &&
+              (validUser ? (
+                <FontAwesomeIcon icon={faCheckCircle} className="valid-icon" />
+              ) : (
+                <FontAwesomeIcon
+                  icon={faTimesCircle}
+                  className="invalid-icon"
+                />
+              ))}
+          </div>
           <input
             type="password"
             className="input"
