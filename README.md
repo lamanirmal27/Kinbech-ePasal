@@ -13,7 +13,7 @@ To clone this repo in your local machine
 ```
 
 
-## install node
+## install node(if required)
 ```bash
   https://nodejs.org/en/download/package-manager
 ```
