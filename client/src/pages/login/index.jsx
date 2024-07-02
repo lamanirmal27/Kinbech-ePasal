@@ -62,7 +62,7 @@ const LoginPage = () => {
         </p>
         <form
           onSubmit={handleSubmit}
-          className="mt-8 mb-2 w-full max-w-md mx-auto px-4 sm:w-80 sm:px-0"
+          className="mt-8 mb-2 w-80 max-w-md mx-auto px-4 sm:w-90 sm:px-0"
         >
           <div className="mb-4 flex flex-col gap-6">
             <div className="relative h-11 w-full min-w-[200px]">

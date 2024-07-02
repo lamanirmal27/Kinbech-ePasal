@@ -64,7 +64,7 @@ export default function Register() {
     }
   };
   return (
-    <div className="flex min-h-screen items-center justify-center lg:mx-auto md:mx-auto sm:mx-auto">
+    <div className="flex min-h-screen items-center justify-center px-4 lg:mx-auto md:mx-auto sm:mx-auto">
       <div className="relative flex flex-col rounded-xl bg-transparent bg-clip-border text-black shadow-none">
         <h4 className="block font-sans text-2xl font-semibold leading-snug tracking-normal text-blue-gray-900 antialiased">
           Sign Up
@@ -74,7 +74,7 @@ export default function Register() {
         </p>
         <form
           onSubmit={handleSubmit}
-          className="mt-8 mb-2 w-80 max-w-screen-lg sm:w-80 sm:px-0"
+          className="mt-8 mb-2 w-80 max-w-screen-lg sm:w-90 sm:px-0"
         >
           <div className="mb-4 flex flex-col gap-6">
             <div className="relative h-11 w-full min-w-[200px]">
