@@ -74,7 +74,7 @@ export default function Register() {
         </p>
         <form
           onSubmit={handleSubmit}
-          className="mt-8 mb-2 w-80 max-w-screen-lg sm:w-96"
+          className="mt-8 mb-2 w-80 max-w-screen-lg sm:w-80 sm:px-0"
         >
           <div className="mb-4 flex flex-col gap-6">
             <div className="relative h-11 w-full min-w-[200px]">

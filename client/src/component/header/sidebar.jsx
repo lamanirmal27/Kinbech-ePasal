@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { HiMenuAlt3 } from "react-icons/hi";
+import { HiMenuAlt3, HiMenu } from "react-icons/hi";
 import { MdOutlineDashboard, MdAddShoppingCart, MdLogin } from "react-icons/md";
 import { RiSettings4Line } from "react-icons/ri";
 import { TbReportAnalytics } from "react-icons/tb";
@@ -17,7 +17,7 @@ const Sidebar = () => {
     { name: "Cart", link: "/", icon: FiShoppingCart },
     { name: "Saved", link: "/", icon: AiOutlineHeart, margin: true },
     { name: "Notification", link: "/", icon: IoIosNotificationsOutline },
-    { name: "Setting", link: "/", icon: RiSettings4Line },
+    { name: "Setting", link: "/construction", icon: RiSettings4Line },
     { name: "Login", link: "/login", icon: MdLogin },
   ];
   const [open, setOpen] = useState(false);
@@ -29,11 +29,19 @@ const Sidebar = () => {
         } duration-500 text-gray-100 px-4`}
       >
         <div className="py-3 flex justify-end">
-          <HiMenuAlt3
-            size={26}
-            className="cursor-pointer"
-            onClick={() => setOpen(!open)}
-          />
+          {open ? (
+            <HiMenuAlt3
+              size={26}
+              className="cursor-pointer"
+              onClick={() => setOpen(!open)}
+            />
+          ) : (
+            <HiMenu
+              size={26}
+              className="cursor-pointer"
+              onClick={() => setOpen(!open)}
+            />
+          )}
         </div>
         <div className="mt-4 flex flex-col gap-4 relative">
           {menus?.map((menu, i) => (
@@ -66,7 +74,6 @@ const Sidebar = () => {
           ))}
         </div>
       </div>
-      <div className="m-3 text-xl text-gray-900 font-semibold"></div>
     </section>
   );
 };
