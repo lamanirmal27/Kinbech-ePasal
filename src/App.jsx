@@ -11,7 +11,7 @@ function App() {
       {/* <Sidebar /> */}
       <Header />
       <Routes>
-        <Route exact path="/" element={<ProductList/>} />
+        <Route exact path="Kinbech-ePasal/" element={<ProductList/>} />
         <Route path="/login" element={<LoginPage />} />
         <Route path="/register" element={<Register />} />
       </Routes>
