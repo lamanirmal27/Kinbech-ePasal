@@ -63,7 +63,7 @@ export default function Header() {
       >
         <div className="flex lg:flex-1">
           <NavLink
-            to={"/"}
+            to={"/Kinbech-ePasal"}
             className="-m-1.5 p-1.5 flex gap-7 font-semibold leading-6 text-gray-900"
           >
             <span className="sr-only">Kinbech e-Pasal</span>

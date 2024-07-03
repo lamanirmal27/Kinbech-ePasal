@@ -8,7 +8,6 @@ import ProductList from "./component/ProductList";
 function App() {
   return (
     <div className="flex ">
-      {/* <Sidebar /> */}
       <Header />
       <Routes>
         <Route exact path="Kinbech-ePasal/" element={<ProductList/>} />
