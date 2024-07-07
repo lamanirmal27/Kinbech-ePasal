@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useContext, useEffect, useState } from "react";
 import image from "../../assets/image.png";
 import logo from "../../assets/logo.png";
 import {
@@ -22,6 +22,7 @@ import {
 } from "@heroicons/react/24/outline";
 import { ChevronDownIcon } from "@heroicons/react/20/solid";
 import { NavLink, useLocation } from "react-router-dom";
+import ProductContext from "../../context/ProductProvider";
 
 const products = [
   {
@@ -49,6 +50,8 @@ function classNames(...classes) {
 }
 
 export default function Header() {
+  const { currentCategories, setCurrentCategories } =
+    useContext(ProductContext);
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const [isLoggedIn, setIsLoggedIn] = useState(false);
   const location = useLocation();
@@ -99,6 +102,9 @@ export default function Header() {
                 <div className="p-4">
                   {products.map((item) => (
                     <div
+                      onClick={() =>
+                        setCurrentCategories(item.name.toLowerCase())
+                      }
                       key={item.name}
                       className="group relative flex items-center gap-x-6 rounded-lg p-4 text-sm leading-6 hover:bg-gray-50"
                     >
@@ -194,6 +200,10 @@ export default function Header() {
                             key={item.name}
                             as="a"
                             href={item.href}
+                            onClick={() => {
+                              setCurrentCategories(item.name.toLowerCase());
+                              setMobileMenuOpen(false);
+                            }}
                             className="block rounded-lg py-2 pl-6 pr-3 text-sm font-semibold leading-7 text-gray-900 hover:bg-gray-50"
                           >
                             {item.name}
@@ -215,12 +225,11 @@ export default function Header() {
                 >
                   Cart
                 </NavLink>
-                
               </div>
               <div className="py-6">
                 {!isLoggedIn ? (
                   <NavLink
-                    to={'/login'}
+                    to={"/login"}
                     onClick={() => setMobileMenuOpen(false)}
                     className="text-sm font-semibold leading-6 text-gray-900"
                   >

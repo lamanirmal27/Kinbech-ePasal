@@ -6,13 +6,16 @@ import { AuthProvider } from "./context/AuthProvider.jsx";
 import { BrowserRouter } from "react-router-dom";
 import { Toaster } from "react-hot-toast";
 import { UserProvider } from "./context/UserProvider.jsx";
+import { ProductProvider } from "./context/ProductProvider.jsx";
 
 ReactDOM.createRoot(document.getElementById("root")).render(
   <BrowserRouter>
     <AuthProvider>
       <UserProvider>
-        <App />
-        <Toaster position="top-right" />
+        <ProductProvider>
+          <App />
+          <Toaster position="top-right" />
+        </ProductProvider>
       </UserProvider>
     </AuthProvider>
   </BrowserRouter>
