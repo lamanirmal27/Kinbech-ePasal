@@ -1,14 +1,18 @@
-import { Link } from "react-router-dom";
-import AuthContext from "../../context/AuthProvider";
+import { Link, useNavigate, useLocation } from "react-router-dom";
 import UserContext from "../../context/UserProvider";
 import { useContext, useEffect, useRef } from "react";
 import toast from "react-hot-toast";
 import axios from "../../api/axios";
+import useAuth from "../../hooks/useAuth";
 const LOGIN_URL = "/auth";
 
 const LoginPage = () => {
-  const { setAuth } = useContext(AuthContext);
+  const { setAuth, auth } = useAuth();
+  const navigate = useNavigate();
+  const location = useLocation();
+  const from = location.state?.from?.pathname || "/";
   const { user, setUser, pwd, setPwd } = useContext(UserContext);
+
   const userRef = useRef();
 
   useEffect(() => {
@@ -29,13 +33,14 @@ const LoginPage = () => {
           withCredentials: true,
         }
       );
-      console.log(JSON.stringify(response?.data));
+      // console.log(JSON.stringify(response?.data));
       const accessToken = response?.data?.accessToken;
       const roles = response?.data?.roles;
       setAuth({ user, pwd, accessToken, roles });
       setUser("");
       setPwd("");
       toast.success("Login Success");
+      navigate(from, { replace: true });
     } catch (err) {
       if (!err?.response) {
         toast.error("No response from server");

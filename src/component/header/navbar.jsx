@@ -19,9 +19,11 @@ import {
   XMarkIcon,
   BookOpenIcon,
   ShoppingBagIcon,
+  UserIcon,
+  BuildingLibraryIcon
 } from "@heroicons/react/24/outline";
 import { ChevronDownIcon } from "@heroicons/react/20/solid";
-import { NavLink, useLocation } from "react-router-dom";
+import { NavLink, useLocation, Link } from "react-router-dom";
 import ProductContext from "../../context/ProductProvider";
 
 const products = [
@@ -58,21 +60,23 @@ export default function Header() {
   const isAuthPage =
     location.pathname === "/register" || location.pathname === "/login";
 
+  const count = 1;
+
   return (
-    <header className="bg-white  w-full fixed bg-opacity-20 backdrop-blur-lg z-50 ">
+    <header className="bg-white mt-0 w-full fixed bg-opacity-20 backdrop-blur-lg z-50 ">
       <nav
         className="mx-auto flex max-w-7xl items-center justify-between p-6 lg:px-8 "
         aria-label="Global"
       >
         <div className="flex lg:flex-1">
-          <NavLink
-            to={"/Kinbech-ePasal"}
+          <Link
+            to={"/"}
             className="-m-1.5 p-1.5 flex gap-7 font-semibold leading-6 text-gray-900"
           >
             <span className="sr-only">Kinbech e-Pasal</span>
             <img className="h-11 w-auto" src={logo} alt="" />
             <span className="flex items-center">Kinbech e-Pasal</span>
-          </NavLink>
+          </Link>
         </div>
         <div className="flex lg:hidden">
           <button
@@ -130,14 +134,14 @@ export default function Header() {
               </PopoverPanel>
             )}
           </Popover>
-          <a href="#" className="text-sm font-semibold leading-6 text-gray-900">
-            Marketplace
-          </a>
         </PopoverGroup>
 
         <div className="hidden lg:flex lg:flex-1 lg:justify-end">
+        <NavLink to={'admin/'} className="flex items-center">
+            <BuildingLibraryIcon  className="h-7 px-7 w-auto relative"/>
+          </NavLink>
           <NavLink className="flex items-center">
-            <ShoppingBagIcon className="h-7 px-7 w-auto " />
+            <ShoppingBagIcon className="h-7 px-7 w-auto relative"/>
           </NavLink>
           {!isLoggedIn ? (
             <NavLink
@@ -148,11 +152,7 @@ export default function Header() {
             </NavLink>
           ) : (
             <div className="flex items-center gap-x-6">
-              <img
-                className="h-16 w-16 rounded-full border-2 border-orange-600"
-                src={image}
-                alt="profile"
-              />
+              <UserIcon className="h-16 w-16 rounded-full border-2 border-orange-600" />
             </div>
           )}
         </div>
