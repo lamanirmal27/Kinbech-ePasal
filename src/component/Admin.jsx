@@ -1,4 +1,4 @@
-import { Link } from "react-router-dom";
+import Users from "./Users";
 
 const Admin = () => {
   return (
@@ -7,10 +7,10 @@ const Admin = () => {
         <h4 className="block font-sans text-2xl font-semibold leading-snug tracking-normal text-blue-gray-900 antialiased">
           Admin Page
         </h4>
+        <Users />
         <p className="mt-1 block font-sans text-base font-normal leading-relaxed text-gray-700 antialiased">
           Nothing to show
         </p>
-        
       </div>
     </div>
   );

@@ -7,11 +7,11 @@ import useAuth from "../../hooks/useAuth";
 const LOGIN_URL = "/auth";
 
 const LoginPage = () => {
-  const { setAuth, auth } = useAuth();
+  const { setAuth, persist, setPersist } = useAuth();
   const navigate = useNavigate();
   const location = useLocation();
   const from = location.state?.from?.pathname || "/";
-  const { user, setUser, pwd, setPwd } = useContext(UserContext);
+  const { user, setUser, pwd, setPwd, setUsers } = useContext(UserContext);
 
   const userRef = useRef();
 
@@ -33,7 +33,7 @@ const LoginPage = () => {
           withCredentials: true,
         }
       );
-      // console.log(JSON.stringify(response?.data));
+      console.log(JSON.stringify(response?.data));
       const accessToken = response?.data?.accessToken;
       const roles = response?.data?.roles;
       setAuth({ user, pwd, accessToken, roles });
@@ -55,6 +55,14 @@ const LoginPage = () => {
       setPwd("");
     }
   };
+
+  const togglePersist = () => {
+    setPersist((prev) => !prev);
+  };
+
+  useEffect(() => {
+    localStorage.setItem("persist", persist);
+  }, [persist]);
 
   return (
     <div className="flex min-h-screen items-center justify-center mx-auto px-4 lg:mx-auto md:mx-auto sm:mx-auto">
@@ -103,6 +111,16 @@ const LoginPage = () => {
           >
             Login
           </button>
+          <div className="flex flex-row items-center justify-start py-2 px-4 text-[0.875rem]">
+            <input
+              type="checkbox"
+              id="persist"
+              onChange={togglePersist}
+              checked={persist}
+              className="mr-2"
+            />
+            <label htmlFor="persist">Keep me Logged In</label>
+          </div>
           <p className="mt-4 block text-center font-sans text-base font-normal leading-relaxed text-gray-700 antialiased">
             No Account?
             <Link

@@ -20,11 +20,13 @@ import {
   BookOpenIcon,
   ShoppingBagIcon,
   UserIcon,
-  BuildingLibraryIcon
+  BuildingLibraryIcon,
 } from "@heroicons/react/24/outline";
 import { ChevronDownIcon } from "@heroicons/react/20/solid";
 import { NavLink, useLocation, Link } from "react-router-dom";
 import ProductContext from "../../context/ProductProvider";
+import useAuth from "../../hooks/useAuth";
+import useLogout from "../../hooks/useLogout";
 
 const products = [
   {
@@ -55,12 +57,20 @@ export default function Header() {
   const { currentCategories, setCurrentCategories } =
     useContext(ProductContext);
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
-  const [isLoggedIn, setIsLoggedIn] = useState(false);
+  const { auth } = useAuth();
+  const [isLoggedIn, setIsLoggedIn] = useState(!!auth?.user);
   const location = useLocation();
   const isAuthPage =
     location.pathname === "/register" || location.pathname === "/login";
 
   const count = 1;
+  const isAdmin = auth?.roles?.find((role) => [5150]?.includes(role));
+
+  const logout = useLogout();
+
+  useEffect(() => {
+    setIsLoggedIn(!!auth?.user);
+  }, [auth]);
 
   return (
     <header className="bg-white mt-0 w-full fixed bg-opacity-20 backdrop-blur-lg z-50 ">
@@ -137,11 +147,13 @@ export default function Header() {
         </PopoverGroup>
 
         <div className="hidden lg:flex lg:flex-1 lg:justify-end">
-        <NavLink to={'admin/'} className="flex items-center">
-            <BuildingLibraryIcon  className="h-7 px-7 w-auto relative"/>
-          </NavLink>
+          {isAdmin && (
+            <NavLink to={"admin/"} className="flex items-center">
+              <BuildingLibraryIcon className="h-7 px-7 w-auto relative" />
+            </NavLink>
+          )}
           <NavLink className="flex items-center">
-            <ShoppingBagIcon className="h-7 px-7 w-auto relative"/>
+            <ShoppingBagIcon className="h-7 px-7 w-auto relative" />
           </NavLink>
           {!isLoggedIn ? (
             <NavLink
@@ -151,8 +163,11 @@ export default function Header() {
               Log in <span aria-hidden="true">&rarr;</span>
             </NavLink>
           ) : (
-            <div className="flex items-center gap-x-6">
-              <UserIcon className="h-16 w-16 rounded-full border-2 border-orange-600" />
+            <div
+              onClick={() => logout()}
+              className="flex items-center gap-x-6 rounded-full border-2 border-orange-600"
+            >
+              <UserIcon className="h-10 w-auto " />
             </div>
           )}
         </div>

@@ -9,6 +9,7 @@ import {
 import { XMarkIcon } from "@heroicons/react/24/outline";
 import { StarIcon } from "@heroicons/react/20/solid";
 import ProductContext from "../../context/ProductProvider";
+import UserContext from "../../context/UserProvider";
 
 function classNames(...classes) {
   return classes.filter(Boolean).join(" ");
@@ -17,10 +18,13 @@ function classNames(...classes) {
 export default function ProductList() {
   const { item, focusItem, setFocusItem, loading, fetchProduct } =
     useContext(ProductContext);
+
+  const { users } = useContext(UserContext);
   const [open, setOpen] = useState(false);
 
   useEffect(() => {
     fetchProduct();
+    console.log(users?.roles);
   }, []);
 
   if (loading) {
@@ -124,7 +128,7 @@ export default function ProductList() {
                       </h3>
 
                       <p className="text-2xl text-gray-900">
-                        {focusItem.price}
+                        {`$${focusItem.price}`}
                       </p>
 
                       {/* Reviews */}

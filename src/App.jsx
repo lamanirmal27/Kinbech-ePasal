@@ -6,6 +6,7 @@ import RequireAuth from "./component/RequireAuth";
 import Admin from "./component/Admin";
 import Unauthorized from "./component/Unauthorized";
 import Layout from "./component/layout";
+import PersistLogin from "./component/PersistLogin";
 
 const ROLES = {
   User: 2001,
@@ -20,10 +21,11 @@ function App() {
         <Route path="login" element={<LoginPage />} />
         <Route path="register" element={<Register />} />
         <Route path="unauthorized" element={<Unauthorized />} />
-        {/* <Route path="admin" element={<Admin />} /> */}
 
-        <Route element={<RequireAuth allowedRoles={[ROLES.Admin]} />}>
-          <Route path="admin" element={<Admin />} />
+        <Route element={<PersistLogin/>}>
+          <Route element={<RequireAuth allowedRoles={[ROLES.Admin]} />}>
+            <Route path="admin" element={<Admin />} />
+          </Route>
         </Route>
       </Route>
     </Routes>

@@ -34,15 +34,13 @@ app.use(cookieParser());
 //server static
 app.use("/", express.static(path.join(__dirname, "/public")));
 
-
 //routes
 app.use("/", require("./routes/root"));
 app.use("/auth", require("./routes/auth"));
 app.use("/refresh", require("./routes/refresh"));
 app.use("/logout", require("./routes/logout"));
-app.use('/user', require('./routes/api/user'))
+app.use("/users", require("./routes/api/user"));
 //app.use(verifyJWT);
-
 
 app.all("*", (req, res) => {
   res.status(404);

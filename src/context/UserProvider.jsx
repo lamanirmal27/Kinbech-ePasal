@@ -8,11 +8,19 @@ export const UserProvider = ({ children }) => {
   const [pwd, setPwd] = useState("");
 
   return (
-    <UserContext.Provider value={{ name, setName, user, setUser, pwd, setPwd }}>
+    <UserContext.Provider
+      value={{
+        name,
+        setName,
+        user,
+        setUser,
+        pwd,
+        setPwd,
+      }}
+    >
       {children}
     </UserContext.Provider>
   );
 };
-
 
 export default UserContext;
