@@ -23,9 +23,7 @@ export default function ProductList() {
     loading,
     cartItem,
     setCartItem,
-    subTotal,
     cartItemCount,
-    setCartItemCount,
   } = useContext(ProductContext);
   const { isLoggedIn } = useContext(UserContext);
   const [open, setOpen] = useState(false);

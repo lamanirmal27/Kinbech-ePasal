@@ -5,10 +5,17 @@ const ProductContext = createContext({});
 export const ProductProvider = ({ children }) => {
   const [isCartOpen, setIsCartOpen] = useState(false);
   const [item, setItem] = useState([]);
-  const [cartItem, setCartItem] = useState([]);
+  const [cartItem, setCartItem] = useState(() => {
+    const storedCart = sessionStorage.getItem("cart");
+    return storedCart ? JSON.parse(storedCart) : [];
+  });
   const [focusItem, setFocusItem] = useState({});
   const [loading, setLoading] = useState(false);
   const api = "https://dummyjson.com/products/category/";
+
+  useEffect(() => {
+    sessionStorage.setItem("cart", JSON.stringify(cartItem));
+  }, [cartItem]);
 
   const electronicsCategories = [
     "laptops",
