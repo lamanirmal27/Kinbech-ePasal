@@ -3,7 +3,9 @@ import { createContext, useEffect, useState } from "react";
 const ProductContext = createContext({});
 
 export const ProductProvider = ({ children }) => {
+  const [isCartOpen, setIsCartOpen] = useState(false);
   const [item, setItem] = useState([]);
+  const [cartItem, setCartItem] = useState([]);
   const [focusItem, setFocusItem] = useState({});
   const [loading, setLoading] = useState(false);
   const api = "https://dummyjson.com/products/category/";
@@ -16,21 +18,26 @@ export const ProductProvider = ({ children }) => {
   ];
 
   const clothesAndCosmetics = [
-    "beauty",
-    "fragrances",
     "mens-shirts",
+    "womens-dresses",
     "mens-shoes",
     "mens-watches",
-    "skin-care",
     "tops",
     "womens-bags",
-    "womens-dresses",
     "womens-jewellery",
     "womens-shoes",
     "womens-watches",
+    "skin-care",
+    "beauty",
+    "fragrances",
   ];
 
   const [currentCategories, setCurrentCategories] = useState("electronics");
+
+  const subTotal = cartItem.reduce((total, item) => {
+    return total + parseFloat(item.price);
+  }, 0);
+  const cartItemCount = cartItem.length;
 
   async function fetchProduct() {
     if (currentCategories === "electronics") {
@@ -85,6 +92,12 @@ export const ProductProvider = ({ children }) => {
         fetchProduct,
         currentCategories,
         setCurrentCategories,
+        isCartOpen,
+        setIsCartOpen,
+        cartItem,
+        setCartItem,
+        subTotal,
+        cartItemCount,
       }}
     >
       {children}

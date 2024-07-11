@@ -6,6 +6,9 @@ export const UserProvider = ({ children }) => {
   const [name, setName] = useState("");
   const [user, setUser] = useState("");
   const [pwd, setPwd] = useState("");
+  const [username, setUsername] = useState("");
+  const [isLoggedIn, setIsLoggedIn] = useState(false);
+  const [isUserSideBarOpen, setIsUserSideBarOpen] = useState(false);
 
   return (
     <UserContext.Provider
@@ -16,6 +19,11 @@ export const UserProvider = ({ children }) => {
         setUser,
         pwd,
         setPwd,
+        isLoggedIn,
+        setIsLoggedIn,
+        isUserSideBarOpen,
+        setIsUserSideBarOpen,
+        username,
       }}
     >
       {children}

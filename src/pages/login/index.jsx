@@ -11,7 +11,7 @@ const LoginPage = () => {
   const navigate = useNavigate();
   const location = useLocation();
   const from = location.state?.from?.pathname || "/";
-  const { user, setUser, pwd, setPwd, setUsers } = useContext(UserContext);
+  const { user, setUser, pwd, setPwd } = useContext(UserContext);
 
   const userRef = useRef();
 
@@ -21,7 +21,6 @@ const LoginPage = () => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    // console.log(user, pwd);
     try {
       const response = await axios.post(
         LOGIN_URL,
@@ -36,7 +35,8 @@ const LoginPage = () => {
       console.log(JSON.stringify(response?.data));
       const accessToken = response?.data?.accessToken;
       const roles = response?.data?.roles;
-      setAuth({ user, pwd, accessToken, roles });
+      const fullName = response?.data?.fullName;
+      setAuth({ user, pwd, accessToken, roles, fullName });
       setUser("");
       setPwd("");
       toast.success("Login Success");

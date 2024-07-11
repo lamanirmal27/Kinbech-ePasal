@@ -17,12 +17,13 @@ function App() {
   return (
     <Routes>
       <Route path="/" element={<Layout />}>
-        <Route path="/" element={<ProductList />} />
         <Route path="login" element={<LoginPage />} />
         <Route path="register" element={<Register />} />
         <Route path="unauthorized" element={<Unauthorized />} />
 
-        <Route element={<PersistLogin/>}>
+        <Route element={<PersistLogin />}>
+          <Route path="/" element={<ProductList />} />
+
           <Route element={<RequireAuth allowedRoles={[ROLES.Admin]} />}>
             <Route path="admin" element={<Admin />} />
           </Route>

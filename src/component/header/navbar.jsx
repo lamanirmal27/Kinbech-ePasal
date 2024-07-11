@@ -1,6 +1,6 @@
 import { useContext, useEffect, useState } from "react";
 import image from "../../assets/image.png";
-import logo from "../../assets/logo.png";
+import logo from "../../assets/new-logo.png";
 import {
   Dialog,
   DialogPanel,
@@ -27,6 +27,9 @@ import { NavLink, useLocation, Link } from "react-router-dom";
 import ProductContext from "../../context/ProductProvider";
 import useAuth from "../../hooks/useAuth";
 import useLogout from "../../hooks/useLogout";
+import UserContext from "../../context/UserProvider";
+import toast from "react-hot-toast";
+import UserSideBar from "../sidePanel/UserSideBar";
 
 const products = [
   {
@@ -41,12 +44,6 @@ const products = [
     href: "#",
     icon: CursorArrowRaysIcon,
   },
-  {
-    name: "Stationary",
-    description: "Book, Copy, many more",
-    href: "#",
-    icon: BookOpenIcon,
-  },
 ];
 
 function classNames(...classes) {
@@ -54,11 +51,13 @@ function classNames(...classes) {
 }
 
 export default function Header() {
-  const { currentCategories, setCurrentCategories } =
+  const { setCurrentCategories, isCartOpen, setIsCartOpen, cartItemCount } =
     useContext(ProductContext);
+
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const { auth } = useAuth();
-  const [isLoggedIn, setIsLoggedIn] = useState(!!auth?.user);
+  const { isLoggedIn, setIsLoggedIn, isUserSideBarOpen, setIsUserSideBarOpen } =
+    useContext(UserContext);
   const location = useLocation();
   const isAuthPage =
     location.pathname === "/register" || location.pathname === "/login";
@@ -69,11 +68,11 @@ export default function Header() {
   const logout = useLogout();
 
   useEffect(() => {
-    setIsLoggedIn(!!auth?.user);
+    setIsLoggedIn(!!auth?.roles?.find((role) => [5150, 2001].includes(role)));
+    console.log(auth?.user);
   }, [auth]);
-
   return (
-    <header className="bg-white mt-0 w-full fixed bg-opacity-20 backdrop-blur-lg z-50 ">
+    <header className="bg-white top-0 mt-0 w-full fixed bg-opacity-20 backdrop-blur-lg z-10 ">
       <nav
         className="mx-auto flex max-w-7xl items-center justify-between p-6 lg:px-8 "
         aria-label="Global"
@@ -81,10 +80,9 @@ export default function Header() {
         <div className="flex lg:flex-1">
           <Link
             to={"/"}
-            className="-m-1.5 p-1.5 flex gap-7 font-semibold leading-6 text-gray-900"
+            className="-m-1.5 p-1.5 flex  font-semibold leading-6 text-gray-900"
           >
-            <span className="sr-only">Kinbech e-Pasal</span>
-            <img className="h-11 w-auto" src={logo} alt="" />
+            <img className="h-16 w-auto" src={logo} alt="logo" />
             <span className="flex items-center">Kinbech e-Pasal</span>
           </Link>
         </div>
@@ -152,9 +150,23 @@ export default function Header() {
               <BuildingLibraryIcon className="h-7 px-7 w-auto relative" />
             </NavLink>
           )}
-          <NavLink className="flex items-center">
+          <button
+            onClick={() => {
+              if (!isLoggedIn) {
+                toast.error("Log in to see your cart");
+              } else {
+                setIsCartOpen(!isCartOpen);
+              }
+            }}
+            className="flex items-center relative"
+          >
             <ShoppingBagIcon className="h-7 px-7 w-auto relative" />
-          </NavLink>
+            {cartItemCount > 0 && (
+              <div className="absolute top-0 right-3 px-2 py-1 text-xs leading-none text-white bg-orange-600 rounded-full">
+                {cartItemCount}
+              </div>
+            )}
+          </button>
           {!isLoggedIn ? (
             <NavLink
               to={"/login"}
@@ -164,7 +176,9 @@ export default function Header() {
             </NavLink>
           ) : (
             <div
-              onClick={() => logout()}
+              onClick={() => {
+                setIsUserSideBarOpen(!isUserSideBarOpen);
+              }}
               className="flex items-center gap-x-6 rounded-full border-2 border-orange-600"
             >
               <UserIcon className="h-10 w-auto " />
@@ -264,6 +278,7 @@ export default function Header() {
           </div>
         </DialogPanel>
       </Dialog>
+      {isUserSideBarOpen && <UserSideBar />}
     </header>
   );
 }

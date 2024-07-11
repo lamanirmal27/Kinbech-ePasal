@@ -29,7 +29,7 @@ const handleLogin = async (req, res) => {
     const refreshToken = jwt.sign(
       { username: foundUser.username },
       process.env.REFRESH_TOKEN_SECRET,
-      { expiresIn: "1d" }
+      { expiresIn: "1h" }
     );
     foundUser.refreshToken = refreshToken;
     const result = await foundUser.save();
@@ -40,7 +40,7 @@ const handleLogin = async (req, res) => {
       secure: false,
       maxAge: 24 * 60 * 60 * 1000,
     });
-    res.json({ roles, accessToken });
+    res.json({ fullName: foundUser.fullName, roles, accessToken });
   } else {
     return res.sendStatus(401); //unauthorized
   }

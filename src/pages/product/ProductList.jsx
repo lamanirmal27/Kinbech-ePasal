@@ -10,22 +10,35 @@ import { XMarkIcon } from "@heroicons/react/24/outline";
 import { StarIcon } from "@heroicons/react/20/solid";
 import ProductContext from "../../context/ProductProvider";
 import UserContext from "../../context/UserProvider";
-
+import Cart from "./Cart";
 function classNames(...classes) {
   return classes.filter(Boolean).join(" ");
 }
 
 export default function ProductList() {
-  const { item, focusItem, setFocusItem, loading, fetchProduct } =
-    useContext(ProductContext);
-
-  const { users } = useContext(UserContext);
+  const {
+    item,
+    focusItem,
+    setFocusItem,
+    loading,
+    cartItem,
+    setCartItem,
+    subTotal,
+    cartItemCount,
+    setCartItemCount,
+  } = useContext(ProductContext);
+  const { isLoggedIn } = useContext(UserContext);
   const [open, setOpen] = useState(false);
 
   useEffect(() => {
-    fetchProduct();
-    console.log(users?.roles);
-  }, []);
+    console.log(cartItemCount);
+    console.log(cartItem);
+  }, [cartItem]);
+
+  const handleAddtoCart = (e) => {
+    e.preventDefault();
+    setCartItem((prev) => [...prev, focusItem]);
+  };
 
   if (loading) {
     return (
@@ -70,14 +83,14 @@ export default function ProductList() {
               >
                 <div className="aspect-h-1 aspect-w-1 w-full overflow-hidden rounded-lg bg-gray-200 xl:aspect-h-8 xl:aspect-w-7">
                   <img
-                    src={product.images[0]}
+                    src={product.thumbnail}
                     // alt={product.imageAlt}
                     className="h-full w-full object-cover object-center group-hover:opacity-75"
                   />
                 </div>
                 <h3 className="mt-4 text-sm text-gray-700">{product.title}</h3>
                 <p className="mt-1 text-lg font-medium text-gray-900">
-                  {product.price}
+                  ${product.price}
                 </p>
               </a>
             ))}
@@ -291,7 +304,11 @@ export default function ProductList() {
                         )}
 
                         <button
-                          type="submit"
+                          disabled={!isLoggedIn}
+                          onClick={(e) => {
+                            setOpen(false);
+                            handleAddtoCart(e);
+                          }}
                           className="mt-6 flex w-full items-center justify-center rounded-md border border-transparent bg-indigo-600 px-8 py-3 text-base font-medium text-white hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2"
                         >
                           Add to cart
@@ -311,6 +328,7 @@ export default function ProductList() {
           </div>
         </div>
       </Dialog>
+      <Cart />
     </>
   );
 }
