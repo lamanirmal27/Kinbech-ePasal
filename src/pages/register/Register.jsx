@@ -4,7 +4,7 @@ import { Link } from "react-router-dom";
 import toast from "react-hot-toast";
 import UserContext from "../../context/UserProvider";
 
-const userUrl = "/user";
+const userUrl = "/users";
 const NAMEREGEX = /^(?!.*\d)(?!.*[^a-zA-Z\s]).{6,}$/;
 const USERREGEX = /^(?![A-Z])\S{6,}$/;
 

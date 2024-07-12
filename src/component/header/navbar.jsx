@@ -1,6 +1,7 @@
 import { useContext, useEffect, useState } from "react";
 import image from "../../assets/image.png";
 import logo from "../../assets/new-logo.png";
+import "./animate.css";
 import {
   Dialog,
   DialogPanel,
@@ -82,7 +83,7 @@ export default function Header() {
             to={"/"}
             className="-m-1.5 p-1.5 flex  font-semibold leading-6 text-gray-900"
           >
-            <img className="h-16 w-auto" src={logo} alt="logo" />
+            <img className="h-16 w-auto spin-on-hover" src={logo} alt="logo" />
             <span className="flex items-center">Kinbech e-Pasal</span>
           </Link>
         </div>
@@ -179,7 +180,7 @@ export default function Header() {
               onClick={() => {
                 setIsUserSideBarOpen(!isUserSideBarOpen);
               }}
-              className="flex items-center gap-x-6 rounded-full border-2 border-orange-600"
+              className="flex items-center gap-x-6 rounded-full hover:border-2 hover:border-orange-600"
             >
               <UserIcon className="h-10 w-auto " />
             </div>
@@ -267,7 +268,7 @@ export default function Header() {
                 ) : (
                   <div className="flex items-center gap-x-6">
                     <img
-                      className="h-16 w-16 rounded-full border-2 border-orange-600"
+                      className="h-16 w-16 rounded-full hover:border-2 hover:border-orange-600"
                       src={image}
                       alt="profile"
                     />

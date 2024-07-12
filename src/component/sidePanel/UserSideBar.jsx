@@ -44,7 +44,7 @@ const UserSideBar = () => {
           <div className="pointer-events-none fixed inset-y-0 right-0 flex max-w-full pl-10">
             <DialogPanel
               transition
-              className="pointer-events-auto w-screen max-w-sm transform transition duration-500 ease-in-out data-[closed]:translate-x-full sm:duration-700 z-50"
+              className="pointer-events-auto w-screen max-w-sm transform transition duration-600 ease-in-out data-[closed]:translate-x-full sm:duration-700 z-50"
             >
               <div className="flex h-full flex-col overflow-y-scroll bg-white shadow-xl">
                 <div className=" px-4 py-6 sm:px-6">

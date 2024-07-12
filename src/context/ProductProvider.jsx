@@ -13,6 +13,12 @@ export const ProductProvider = ({ children }) => {
   const [loading, setLoading] = useState(false);
   const api = "https://dummyjson.com/products/category/";
 
+  const handleRemoveCartItem = (productId) => {
+    setCartItem((prevCartItem) =>
+      prevCartItem.filter((item) => item.id !== productId)
+    );
+  };
+
   useEffect(() => {
     sessionStorage.setItem("cart", JSON.stringify(cartItem));
   }, [cartItem]);
@@ -41,9 +47,11 @@ export const ProductProvider = ({ children }) => {
 
   const [currentCategories, setCurrentCategories] = useState("electronics");
 
-  const subTotal = cartItem.reduce((total, item) => {
-    return total + parseFloat(item.price);
-  }, 0);
+  const subTotal = cartItem
+    .reduce((total, item) => {
+      return total + parseFloat(item.price);
+    }, 0.0)
+    .toFixed(2);
   const cartItemCount = cartItem.length;
 
   async function fetchProduct() {
@@ -105,6 +113,7 @@ export const ProductProvider = ({ children }) => {
         setCartItem,
         subTotal,
         cartItemCount,
+        handleRemoveCartItem,
       }}
     >
       {children}

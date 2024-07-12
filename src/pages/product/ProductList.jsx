@@ -11,6 +11,7 @@ import { StarIcon } from "@heroicons/react/20/solid";
 import ProductContext from "../../context/ProductProvider";
 import UserContext from "../../context/UserProvider";
 import Cart from "./Cart";
+import toast from "react-hot-toast";
 function classNames(...classes) {
   return classes.filter(Boolean).join(" ");
 }
@@ -302,10 +303,13 @@ export default function ProductList() {
                         )}
 
                         <button
-                          disabled={!isLoggedIn}
                           onClick={(e) => {
-                            setOpen(false);
-                            handleAddtoCart(e);
+                            isLoggedIn
+                              ? (e.preventDefault(),
+                                setOpen(false),
+                                handleAddtoCart(e))
+                              : (e.preventDefault(),
+                                toast.error("Your need to login first"));
                           }}
                           className="mt-6 flex w-full items-center justify-center rounded-md border border-transparent bg-indigo-600 px-8 py-3 text-base font-medium text-white hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2"
                         >

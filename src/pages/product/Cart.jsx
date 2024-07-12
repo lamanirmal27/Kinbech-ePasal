@@ -9,6 +9,8 @@ import {
 } from "@headlessui/react";
 import { XMarkIcon } from "@heroicons/react/24/outline";
 import ProductContext from "../../context/ProductProvider";
+import toast from "react-hot-toast";
+import { Link } from "react-router-dom";
 
 // const cartItem = [
 //   {
@@ -39,16 +41,18 @@ import ProductContext from "../../context/ProductProvider";
 // ];
 
 export default function Cart() {
-  const { isCartOpen, setIsCartOpen, cartItem, setCartItem, subTotal } =
-    useContext(ProductContext);
+  const {
+    isCartOpen,
+    setIsCartOpen,
+    cartItem,
+    setCartItem,
+    subTotal,
+    handleRemoveCartItem,
+  } = useContext(ProductContext);
 
-  
-
-  function handleRemoveCartItem(productId) {
-    setCartItem((prevCartItem) =>
-      prevCartItem.filter((item) => item.id !== productId)
-    );
-  }
+  const handleRemove = (productId) => {
+    handleRemoveCartItem(productId);
+  };
 
   return (
     <Dialog open={isCartOpen} onClose={setIsCartOpen} className="relative z-10">
@@ -82,9 +86,9 @@ export default function Cart() {
                       </button>
                     </div>
                   </div>
-                  {
-                    cartItem.length <=0 && (<p className="mt-8">Cart is empty</p>) 
-                  }
+                  {cartItem.length <= 0 && (
+                    <p className="mt-8">Cart is empty</p>
+                  )}
                   <div className="mt-8">
                     <div className="flow-root">
                       <ul
@@ -122,9 +126,7 @@ export default function Cart() {
 
                                 <div className="flex">
                                   <button
-                                    onClick={() =>
-                                      handleRemoveCartItem(product.id)
-                                    }
+                                    onClick={() => handleRemove(product.id)}
                                     className="font-medium text-indigo-600 hover:text-indigo-500"
                                   >
                                     Remove
@@ -148,12 +150,15 @@ export default function Cart() {
                     Shipping and taxes calculated at checkout.
                   </p>
                   <div className="mt-6">
-                    <a
-                      href="#"
+                    <Link
+                      to={"/checkout"}
+                      onClick={() => {
+                        setIsCartOpen(false);
+                      }}
                       className="flex items-center justify-center rounded-md border border-transparent bg-orange-600 px-6 py-3 text-base font-medium text-white shadow-sm hover:bg-orange-700"
                     >
                       Checkout
-                    </a>
+                    </Link>
                   </div>
                   <div className="mt-6 flex justify-center text-center text-sm text-gray-500">
                     <p>

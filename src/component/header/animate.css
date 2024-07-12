@@ -1,0 +1,7 @@
+.spin-on-hover {
+    transition: transform 0.5s ease-in-out;
+  }
+  
+  .spin-on-hover:hover {
+    transform: rotate(360deg) scale(2.0);
+  }
