@@ -1,12 +1,38 @@
 import { useContext } from "react";
 import ProductContext from "../../context/ProductProvider";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
+import axios from "../../api/axios";
 
 const Checkout = () => {
   const { cartItem, handleRemoveCartItem, subTotal } =
     useContext(ProductContext);
   const handleRemove = (productId) => {
     handleRemoveCartItem(productId);
+  };
+  const navigate = useNavigate();
+  const handlePayment = async () => {
+    // console.log("complete", cartItem);/
+    const payload = {
+      return_url: "http://localhost:5173/success",
+      website_url: "http://localhost:5173/",
+      amount: parseInt(subTotal),
+      purchase_order_id: "test12",
+      purchase_order_name: "test",
+      customer_info: {
+        name: "Khalti Bahadur",
+        email: "example@gmail.com",
+        phone: "9800000123",
+      },
+      // product_details: JSON.stringify(cartItem),
+    };
+
+    const response = await axios.post("/payment-khalti", payload);
+    if (response) {
+      const paymentUrl = response?.data?.data?.payment_url; // redirect to payment url
+      if (paymentUrl) {
+        window.location.href = paymentUrl;
+      }
+    }
   };
   return (
     <div
@@ -57,7 +83,7 @@ const Checkout = () => {
                         <div className="flex">
                           <button
                             onClick={() => handleRemove(product.id)}
-                            className="font-medium text-indigo-600 hover:text-indigo-500"
+                            className="font-medium text-orange-600 hover:text-orange-500"
                           >
                             Remove
                           </button>
@@ -124,13 +150,6 @@ const Checkout = () => {
                 <input
                   type="text"
                   placeholder="State"
-                  className="px-4 py-3 bg-gray-100 focus:bg-transparent text-gray-800 w-full text-sm rounded-md focus:outline-blue-600"
-                />
-              </div>
-              <div>
-                <input
-                  type="text"
-                  placeholder="Zip Code"
                   className="px-4 py-3 bg-gray-100 focus:bg-transparent text-gray-800 w-full text-sm rounded-md focus:outline-blue-600"
                 />
               </div>
@@ -212,6 +231,7 @@ const Checkout = () => {
               </button>
               <button
                 type="button"
+                onClick={handlePayment}
                 className="rounded-md px-6 py-3 w-full text-sm tracking-wide bg-orange-600 hover:bg-orange-700 text-white"
               >
                 Complete Purchase

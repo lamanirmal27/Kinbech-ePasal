@@ -127,7 +127,7 @@ export default function Cart() {
                                 <div className="flex">
                                   <button
                                     onClick={() => handleRemove(product.id)}
-                                    className="font-medium text-indigo-600 hover:text-indigo-500"
+                                    className="font-medium text-orange-600 hover:text-orange-500"
                                   >
                                     Remove
                                   </button>

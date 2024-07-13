@@ -16,7 +16,7 @@ ReactDOM.createRoot(document.getElementById("root")).render(
           <Routes>
             <Route path="/*" element={<App />} />
           </Routes>
-          <Toaster position="top-right" />
+          <Toaster position="top-center" />
         </ProductProvider>
       </UserProvider>
     </AuthProvider>
