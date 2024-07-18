@@ -8,8 +8,6 @@ export const AuthProvider = ({ children }) => {
     JSON.parse(localStorage.getItem("persist")) || false
   );
 
-  
-
   return (
     <AuthContext.Provider value={{ auth, setAuth, persist, setPersist }}>
       {children}

@@ -25,6 +25,7 @@ const handleRefreshToken = async (req, res) => {
     );
     res.json({
       fullName: foundUser.fullName,
+      id: foundUser._id,
       roles,
       accessToken,
     });

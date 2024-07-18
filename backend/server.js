@@ -3,6 +3,7 @@ const express = require("express");
 const errorHandler = require("./middleware/errorHandler");
 const corsOptions = require("./config/corsOptions");
 const verifyJWT = require("./middleware/verifyJWT");
+const { verifyPayment } = require("./controllers/paymentController");
 const cors = require("cors");
 const app = express();
 const path = require("path");
@@ -41,6 +42,7 @@ app.use("/refresh", require("./routes/refresh"));
 app.use("/logout", require("./routes/logout"));
 app.use("/users", require("./routes/api/user"));
 app.use("/payment-khalti", require("./routes/payment"));
+
 //app.use(verifyJWT);
 
 app.all("*", (req, res) => {

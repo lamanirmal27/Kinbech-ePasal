@@ -2,6 +2,7 @@
 
 import { useContext, useEffect, useState } from "react";
 import {
+  Button,
   Dialog,
   DialogBackdrop,
   DialogPanel,
@@ -10,7 +11,7 @@ import {
 import { XMarkIcon } from "@heroicons/react/24/outline";
 import ProductContext from "../../context/ProductProvider";
 import toast from "react-hot-toast";
-import { Link } from "react-router-dom";
+import { useNavigate, Link } from "react-router-dom";
 
 // const cartItem = [
 //   {
@@ -53,6 +54,8 @@ export default function Cart() {
   const handleRemove = (productId) => {
     handleRemoveCartItem(productId);
   };
+
+  const navigate = useNavigate();
 
   return (
     <Dialog open={isCartOpen} onClose={setIsCartOpen} className="relative z-10">
@@ -150,28 +153,20 @@ export default function Cart() {
                     Shipping and taxes calculated at checkout.
                   </p>
                   <div className="mt-6">
-                    <Link
-                      to={"/checkout"}
+                    <a
+                      // to={"/checkout"}
                       onClick={() => {
-                        setIsCartOpen(false);
+                        if (cartItem.length >= 1) {
+                          setIsCartOpen(false);
+                          navigate("/checkout");
+                        } else {
+                          toast.error("Your Cart is empty");
+                        }
                       }}
                       className="flex items-center justify-center rounded-md border border-transparent bg-orange-600 px-6 py-3 text-base font-medium text-white shadow-sm hover:bg-orange-700"
                     >
                       Checkout
-                    </Link>
-                  </div>
-                  <div className="mt-6 flex justify-center text-center text-sm text-gray-500">
-                    <p>
-                      or{" "}
-                      <button
-                        type="button"
-                        onClick={() => setIsCartOpen(false)}
-                        className="font-medium text-orange-600 hover:text-orange-500"
-                      >
-                        Continue Shopping
-                        <span aria-hidden="true"> &rarr;</span>
-                      </button>
-                    </p>
+                    </a>
                   </div>
                 </div>
               </div>

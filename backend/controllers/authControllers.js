@@ -40,7 +40,7 @@ const handleLogin = async (req, res) => {
       secure: false,
       maxAge: 24 * 60 * 60 * 1000,
     });
-    res.json({ fullName: foundUser.fullName, roles, accessToken });
+    res.json({ fullName: foundUser.fullName, roles, accessToken, id: foundUser._id });
   } else {
     return res.sendStatus(401); //unauthorized
   }

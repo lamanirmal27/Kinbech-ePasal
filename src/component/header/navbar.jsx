@@ -70,7 +70,7 @@ export default function Header() {
 
   useEffect(() => {
     setIsLoggedIn(!!auth?.roles?.find((role) => [5150, 2001].includes(role)));
-    console.log(auth?.user);
+    // console.log(auth?.user);
   }, [auth]);
   return (
     <header className="bg-white top-0 mt-0 w-full fixed bg-opacity-20 backdrop-blur-lg z-10 ">

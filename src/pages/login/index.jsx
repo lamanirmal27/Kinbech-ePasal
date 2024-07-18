@@ -11,13 +11,17 @@ const LoginPage = () => {
   const navigate = useNavigate();
   const location = useLocation();
   const from = location.state?.from?.pathname || "/";
-  const { user, setUser, pwd, setPwd } = useContext(UserContext);
+  const { user, setUser, pwd, setPwd, setUid, uid } = useContext(UserContext);
 
   const userRef = useRef();
 
   useEffect(() => {
     userRef.current.focus();
   }, []);
+
+  useEffect(() => {
+    console.log(uid);
+  }, [uid]);
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -32,11 +36,12 @@ const LoginPage = () => {
           withCredentials: true,
         }
       );
-      console.log(JSON.stringify(response?.data));
+      // console.log(JSON.stringify(response?.data));
       const accessToken = response?.data?.accessToken;
       const roles = response?.data?.roles;
       const fullName = response?.data?.fullName;
-      setAuth({ user, pwd, accessToken, roles, fullName });
+      const userId = response?.data?.id;
+      setAuth({ user, pwd, accessToken, roles, fullName, userId });
       setUser("");
       setPwd("");
       toast.success("Login Success");
@@ -51,7 +56,7 @@ const LoginPage = () => {
       } else {
         toast.error("Login failed");
       }
-      setUser("");
+      // setUser("");
       setPwd("");
     }
   };

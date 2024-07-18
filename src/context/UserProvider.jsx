@@ -3,6 +3,7 @@ import { createContext, useState } from "react";
 const UserContext = createContext(null);
 
 export const UserProvider = ({ children }) => {
+  const [uid, setUid] = useState("");
   const [name, setName] = useState("");
   const [user, setUser] = useState("");
   const [pwd, setPwd] = useState("");
@@ -24,6 +25,8 @@ export const UserProvider = ({ children }) => {
         isUserSideBarOpen,
         setIsUserSideBarOpen,
         username,
+        uid,
+        setUid,
       }}
     >
       {children}

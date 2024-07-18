@@ -11,13 +11,17 @@ export const ProductProvider = ({ children }) => {
   });
   const [focusItem, setFocusItem] = useState({});
   const [loading, setLoading] = useState(false);
-  const api = "https://dummyjson.com/products/category/";
+  const api = "https://dummyjson.com/products/category";
 
   const handleRemoveCartItem = (productId) => {
     setCartItem((prevCartItem) =>
       prevCartItem.filter((item) => item.id !== productId)
     );
   };
+
+  useEffect(() => {
+    console.log(item);
+  }, []);
 
   useEffect(() => {
     sessionStorage.setItem("cart", JSON.stringify(cartItem));
@@ -31,18 +35,11 @@ export const ProductProvider = ({ children }) => {
   ];
 
   const clothesAndCosmetics = [
-    "mens-shirts",
-    "womens-dresses",
     "mens-shoes",
     "mens-watches",
-    "tops",
-    "womens-bags",
-    "womens-jewellery",
+
     "womens-shoes",
     "womens-watches",
-    "skin-care",
-    "beauty",
-    "fragrances",
   ];
 
   const [currentCategories, setCurrentCategories] = useState("electronics");
@@ -60,7 +57,7 @@ export const ProductProvider = ({ children }) => {
       const allProducts = [];
       try {
         for (const cat of electronicsCategories) {
-          const req = await fetch(api + cat);
+          const req = await fetch(`${api}/${cat}/?limit=2`);
           const response = await req.json();
           if (response?.products) {
             allProducts.push(...response.products);
@@ -77,7 +74,7 @@ export const ProductProvider = ({ children }) => {
       const allProducts = [];
       try {
         for (const cat of clothesAndCosmetics) {
-          const req = await fetch(api + cat);
+          const req = await fetch(`${api}/${cat}/limit=2`);
           const response = await req.json();
           if (response?.products) {
             allProducts.push(...response.products);
