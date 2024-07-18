@@ -33,6 +33,7 @@ const Inventory = () => {
       },
       transactionId: item?.transactionId,
       productId: item?.productId,
+      purchasedItem: item?.purchasedItem,
       address: item?.shippingAddress?.address,
       paymentMethod: item?.paymentGateway,
       statusOf: item?.status,
@@ -54,6 +55,11 @@ const Inventory = () => {
       {
         accessorKey: "transactionId",
         header: "Transaction ID",
+        size: 150,
+      },
+      {
+        accessorKey: "purchasedItem",
+        header: "Purchased Item",
         size: 150,
       },
       {

@@ -1,6 +1,7 @@
 import { useContext, useEffect, useState } from "react";
 import image from "../../assets/image.png";
 import logo from "../../assets/new-logo.png";
+import SearchItems from "../SearchItems";
 import "./animate.css";
 import {
   Dialog,
@@ -22,9 +23,10 @@ import {
   ShoppingBagIcon,
   UserIcon,
   BuildingLibraryIcon,
+  MagnifyingGlassIcon,
 } from "@heroicons/react/24/outline";
 import { ChevronDownIcon } from "@heroicons/react/20/solid";
-import { NavLink, useLocation, Link } from "react-router-dom";
+import { useLocation, Link } from "react-router-dom";
 import ProductContext from "../../context/ProductProvider";
 import useAuth from "../../hooks/useAuth";
 import useLogout from "../../hooks/useLogout";
@@ -34,16 +36,14 @@ import UserSideBar from "../sidePanel/UserSideBar";
 
 const products = [
   {
-    name: "Electronics",
-    description: "TVs, Laptop, Mobile, Accessories",
-    href: "#",
-    icon: ChartPieIcon,
+    name: "Fashion",
+    description: "Pant, shirt, t-shirt",
+    icon: CursorArrowRaysIcon,
   },
   {
-    name: "Clothes",
-    description: "Pant, shirt, t-shirt",
-    href: "#",
-    icon: CursorArrowRaysIcon,
+    name: "Electronics",
+    description: "TVs, Laptop, Mobile, Accessories",
+    icon: ChartPieIcon,
   },
 ];
 
@@ -52,8 +52,14 @@ function classNames(...classes) {
 }
 
 export default function Header() {
-  const { setCurrentCategories, isCartOpen, setIsCartOpen, cartItemCount } =
-    useContext(ProductContext);
+  const {
+    setCurrentCategories,
+    isCartOpen,
+    setIsCartOpen,
+    cartItemCount,
+    scrollToElectronics,
+    scrollToFashion,
+  } = useContext(ProductContext);
 
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const { auth } = useAuth();
@@ -61,7 +67,9 @@ export default function Header() {
     useContext(UserContext);
   const location = useLocation();
   const isAuthPage =
-    location.pathname === "/register" || location.pathname === "/login";
+    location.pathname === "/register" ||
+    location.pathname === "/login" ||
+    location.pathname === "/admin/";
 
   const count = 1;
   const isAdmin = auth?.roles?.find((role) => [5150]?.includes(role));
@@ -73,7 +81,7 @@ export default function Header() {
     // console.log(auth?.user);
   }, [auth]);
   return (
-    <header className="bg-white top-0 mt-0 w-full fixed bg-opacity-20 backdrop-blur-lg z-10 ">
+    <header className="bg-white top-0 fixed mt-0 w-full bg-opacity-20 backdrop-blur-lg z-10 ">
       <nav
         className="mx-auto flex max-w-7xl items-center justify-between p-6 lg:px-8 "
         aria-label="Global"
@@ -115,9 +123,14 @@ export default function Header() {
                 <div className="p-4">
                   {products.map((item) => (
                     <div
-                      onClick={() =>
-                        setCurrentCategories(item.name.toLowerCase())
-                      }
+                      onClick={(e) => {
+                        e.preventDefault();
+                        if (item.name === "Fashion") {
+                          scrollToFashion();
+                        } else {
+                          scrollToElectronics();
+                        }
+                      }}
                       key={item.name}
                       className="group relative flex items-center gap-x-6 rounded-lg p-4 text-sm leading-6 hover:bg-gray-50"
                     >
@@ -128,10 +141,7 @@ export default function Header() {
                         />
                       </div>
                       <div className="flex-auto">
-                        <a
-                          href={item.href}
-                          className="block font-semibold text-gray-900"
-                        >
+                        <a className="block font-semibold text-gray-900">
                           {item.name}
                           <span className="absolute inset-0" />
                         </a>
@@ -146,10 +156,12 @@ export default function Header() {
         </PopoverGroup>
 
         <div className="hidden lg:flex lg:flex-1 lg:justify-end">
+          <SearchItems />
+
           {isAdmin && (
-            <NavLink to={"admin/"} className="flex items-center">
+            <Link to={"admin/"} className="flex items-center">
               <BuildingLibraryIcon className="h-7 px-7 w-auto relative" />
-            </NavLink>
+            </Link>
           )}
           <button
             onClick={() => {
@@ -169,12 +181,12 @@ export default function Header() {
             )}
           </button>
           {!isLoggedIn ? (
-            <NavLink
+            <Link
               to={"/login"}
-              className="text-sm font-semibold leading-6 text-gray-900"
+              className="text-sm my-auto font-semibold leading-6 text-gray-900"
             >
               Log in <span aria-hidden="true">&rarr;</span>
-            </NavLink>
+            </Link>
           ) : (
             <div
               onClick={() => {
@@ -243,28 +255,16 @@ export default function Header() {
                     </>
                   )}
                 </Disclosure>
-                <NavLink
-                  href="#"
-                  className="-mx-3 block rounded-lg px-3 py-2 text-base font-semibold leading-7 text-gray-900 hover:bg-gray-50"
-                >
-                  Marketplace
-                </NavLink>
-                <NavLink
-                  href="#"
-                  className="-mx-3 block rounded-lg px-3 py-2 text-base font-semibold leading-7 text-gray-900 hover:bg-gray-50"
-                >
-                  Cart
-                </NavLink>
               </div>
               <div className="py-6">
                 {!isLoggedIn ? (
-                  <NavLink
+                  <Link
                     to={"/login"}
                     onClick={() => setMobileMenuOpen(false)}
                     className="text-sm font-semibold leading-6 text-gray-900"
                   >
                     Log in <span aria-hidden="true">&rarr;</span>
-                  </NavLink>
+                  </Link>
                 ) : (
                   <div className="flex items-center gap-x-6">
                     <img

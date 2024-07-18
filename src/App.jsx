@@ -12,6 +12,7 @@ import Checkout from "./pages/product/Checkout";
 import Success from "./component/Success";
 import Orders from "./pages/product/Orders";
 import DeliverySuccess from "./component/DeliverySuccess";
+import NotFound from "./pages/NotFound";
 
 const ROLES = {
   User: 2001,
@@ -28,6 +29,7 @@ function App() {
 
         <Route element={<PersistLogin />}>
           <Route path="/" element={<ProductList />} />
+          <Route path="/details" element={<Detials />} />
           <Route element={<RequireAuth allowedRoles={[ROLES.User]} />}>
             <Route path="/details" element={<Detials />} />
             <Route path="/checkout" element={<Checkout />} />
@@ -39,6 +41,8 @@ function App() {
             <Route path="admin" element={<Admin />} />
           </Route>
         </Route>
+
+        <Route path="*" element={<NotFound />} />
       </Route>
     </Routes>
   );

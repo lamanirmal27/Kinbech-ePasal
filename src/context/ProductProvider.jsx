@@ -1,15 +1,20 @@
-import { createContext, useEffect, useState } from "react";
-
+import { createContext, useEffect, useRef, useState } from "react";
+import newItem from "./itemData";
 const ProductContext = createContext({});
 
 export const ProductProvider = ({ children }) => {
   const [isCartOpen, setIsCartOpen] = useState(false);
   const [item, setItem] = useState([]);
+  const fashionRef = useRef(null);
+  const electoRef = useRef(null);
   const [cartItem, setCartItem] = useState(() => {
     const storedCart = sessionStorage.getItem("cart");
     return storedCart ? JSON.parse(storedCart) : [];
   });
-  const [focusItem, setFocusItem] = useState({});
+  const [focusItem, setFocusItem] = useState(() => {
+    const focused = sessionStorage.getItem("focus");
+    return focused ? JSON.parse(focused) : [];
+  });
   const [loading, setLoading] = useState(false);
   const api = "https://dummyjson.com/products/category";
 
@@ -19,6 +24,27 @@ export const ProductProvider = ({ children }) => {
     );
   };
 
+  // const scrollToFashion = () => {
+  //   fashionRef.current.scrollIntoView({
+  //     behavior: "smooth",
+  //   });
+  // };
+  const scrollToFashion = () => {
+    const yOffset = -100; // Adjust this value as needed
+    const element = fashionRef.current;
+    const y = element.getBoundingClientRect().top + yOffset;
+
+    window.scrollTo({ top: y, behavior: "smooth" });
+  };
+
+  const scrollToElectronics = () => {
+    const yOffset = -120; // Adjust this value as needed
+    const element = electoRef.current;
+    const y = element.getBoundingClientRect().top + yOffset;
+
+    window.scrollTo({ top: y, behavior: "smooth" });
+  };
+
   useEffect(() => {
     console.log(item);
   }, []);
@@ -26,6 +52,10 @@ export const ProductProvider = ({ children }) => {
   useEffect(() => {
     sessionStorage.setItem("cart", JSON.stringify(cartItem));
   }, [cartItem]);
+
+  useEffect(() => {
+    sessionStorage.setItem("focus", JSON.stringify(focusItem));
+  }, [focusItem]);
 
   const electronicsCategories = [
     "laptops",
@@ -95,6 +125,8 @@ export const ProductProvider = ({ children }) => {
   return (
     <ProductContext.Provider
       value={{
+        fashionRef,
+        electoRef,
         item,
         setItem,
         focusItem,
@@ -111,6 +143,9 @@ export const ProductProvider = ({ children }) => {
         subTotal,
         cartItemCount,
         handleRemoveCartItem,
+        newItem,
+        scrollToElectronics,
+        scrollToFashion,
       }}
     >
       {children}

@@ -28,6 +28,10 @@ const paymentSchema = new mongoose.Schema(
       type: Date,
       default: () => Date.now(),
     },
+    purchasedItem: {
+      type: String,
+      required: true,
+    },
   },
   {
     timestamps: true,

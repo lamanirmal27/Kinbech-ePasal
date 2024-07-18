@@ -33,15 +33,27 @@ const Checkout = () => {
       setLoading(false);
       return;
     }
-
+    if (
+      (subTotal < 1000 || subTotal > 100000) &&
+      selectedPayment === "khalti"
+    ) {
+      setError(
+        "Total amount must be between 1000 and 10000 for Online payment"
+      );
+      setLoading(false);
+      return;
+    }
     const pid = shortid.generate();
 
     const payload = {
       return_url: "http://localhost:5173/success",
       website_url: "http://localhost:5173/",
-      amount: parseInt(subTotal) * 100,
+      amount: parseInt(subTotal),
       purchase_order_id: pid,
-      purchase_order_name: "test",
+      purchase_order_name:
+        cartItem?.length === 1
+          ? cartItem?.[0]?.name
+          : cartItem?.map((item) => item.name).join(", "),
       customer_info: { name, email, phone },
       shipping_address: { address, district },
       payment_method: selectedPayment,
@@ -95,7 +107,7 @@ const Checkout = () => {
                     <div className="h-24 w-24 flex-shrink-0 overflow-hidden rounded-md border border-gray-200">
                       <img
                         alt={product?.title}
-                        src={product.images[0]}
+                        src={product?.images?.[0]?.src}
                         className="h-full w-full object-cover object-center"
                       />
                     </div>

@@ -94,6 +94,7 @@ const completePayment = async (req, res) => {
     const paymentData = await Payment.create({
       customerInfo: customer_info,
       shippingAddress: shipping_address,
+      purchasedItem: purchase_order_name,
       transactionId: transaction_id,
       pidx: pidx,
       productId: purchase_order_id,
