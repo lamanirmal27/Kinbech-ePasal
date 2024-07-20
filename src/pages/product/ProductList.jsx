@@ -23,13 +23,10 @@ function classNames(...classes) {
 
 export default function ProductList() {
   const {
-    item,
     focusItem,
     setFocusItem,
     loading,
-    cartItem,
     setCartItem,
-    cartItemCount,
     newItem,
     fashionRef,
     electoRef,

@@ -15,7 +15,7 @@ export default function Detials() {
 
   useEffect(() => {
     setActiveImage(focusItem?.images?.[0]?.src);
-  }, [focusItem]);
+  }, [focusItem, activeImg]);
 
   return (
     <div className="bg-white mt-0 p-20">

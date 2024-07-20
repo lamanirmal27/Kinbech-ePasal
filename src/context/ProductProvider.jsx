@@ -16,7 +16,6 @@ export const ProductProvider = ({ children }) => {
     return focused ? JSON.parse(focused) : [];
   });
   const [loading, setLoading] = useState(false);
-  const api = "https://dummyjson.com/products/category";
 
   const handleRemoveCartItem = (productId) => {
     setCartItem((prevCartItem) =>
@@ -24,11 +23,6 @@ export const ProductProvider = ({ children }) => {
     );
   };
 
-  // const scrollToFashion = () => {
-  //   fashionRef.current.scrollIntoView({
-  //     behavior: "smooth",
-  //   });
-  // };
   const scrollToFashion = () => {
     const yOffset = -100; // Adjust this value as needed
     const element = fashionRef.current;
@@ -57,21 +51,6 @@ export const ProductProvider = ({ children }) => {
     sessionStorage.setItem("focus", JSON.stringify(focusItem));
   }, [focusItem]);
 
-  const electronicsCategories = [
-    "laptops",
-    "smartphones",
-    "tablets",
-    "mobile-accessories",
-  ];
-
-  const clothesAndCosmetics = [
-    "mens-shoes",
-    "mens-watches",
-
-    "womens-shoes",
-    "womens-watches",
-  ];
-
   const [currentCategories, setCurrentCategories] = useState("electronics");
 
   const subTotal = cartItem
@@ -81,59 +60,16 @@ export const ProductProvider = ({ children }) => {
     .toFixed(2);
   const cartItemCount = cartItem.length;
 
-  async function fetchProduct() {
-    if (currentCategories === "electronics") {
-      setLoading(true);
-      const allProducts = [];
-      try {
-        for (const cat of electronicsCategories) {
-          const req = await fetch(`${api}/${cat}/?limit=2`);
-          const response = await req.json();
-          if (response?.products) {
-            allProducts.push(...response.products);
-          }
-        }
-        setItem(allProducts);
-      } catch (error) {
-        console.log(error.message);
-      } finally {
-        setLoading(false);
-      }
-    } else if (currentCategories === "clothes") {
-      setLoading(true);
-      const allProducts = [];
-      try {
-        for (const cat of clothesAndCosmetics) {
-          const req = await fetch(`${api}/${cat}/limit=2`);
-          const response = await req.json();
-          if (response?.products) {
-            allProducts.push(...response.products);
-          }
-        }
-        setItem(allProducts);
-      } catch (error) {
-        console.log(error.message);
-      } finally {
-        setLoading(false);
-      }
-    }
-  }
-
-  useEffect(() => {
-    fetchProduct();
-  }, [currentCategories]);
   return (
     <ProductContext.Provider
       value={{
         fashionRef,
         electoRef,
-        item,
         setItem,
         focusItem,
         setFocusItem,
         loading,
         setLoading,
-        fetchProduct,
         currentCategories,
         setCurrentCategories,
         isCartOpen,
