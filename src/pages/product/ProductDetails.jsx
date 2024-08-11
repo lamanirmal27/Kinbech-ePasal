@@ -14,7 +14,7 @@ export default function Detials() {
   };
 
   useEffect(() => {
-    setActiveImage(focusItem?.images?.[0]?.src);
+    // setActiveImage(focusItem?.images?.[0]?.src);
   }, [focusItem, activeImg]);
 
   return (

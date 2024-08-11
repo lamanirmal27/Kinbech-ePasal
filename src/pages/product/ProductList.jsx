@@ -107,7 +107,7 @@ export default function ProductList() {
                       setFocusItem(product);
                       setOpen(true);
                     }}
-                    key={newItem.id}
+                    key={product.id}
                     className="group"
                   >
                     <div className="aspect-h-1 aspect-w-1 w-full overflow-hidden rounded-lg bg-gray-200 xl:aspect-h-8 xl:aspect-w-7">
@@ -129,7 +129,7 @@ export default function ProductList() {
           </div>
         </div>
       </div>
-      <div ref={electoRef} className="bg-white mx-auto mt-0">
+      {/* <div ref={electoRef} className="bg-white mx-auto mt-0">
         <div className="mx-auto mt-0 max-w-2xl px-4 sm:px-6 lg:max-w-7xl lg:px-8 ">
           <h2 className="sr-only">Products</h2>
           <span className="flex justify-between ">
@@ -187,7 +187,7 @@ export default function ProductList() {
             )}
           </div>
         </div>
-      </div>
+      </div> */}
       <Dialog className="relative z-10" open={open} onClose={setOpen}>
         <DialogBackdrop
           transition
