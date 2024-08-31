@@ -4,11 +4,6 @@ import logo from "../../assets/new-logo.png";
 import SearchItems from "../SearchItems";
 import "./animate.css";
 import {
-  Dialog,
-  DialogPanel,
-  Disclosure,
-  DisclosureButton,
-  DisclosurePanel,
   Popover,
   PopoverButton,
   PopoverGroup,
@@ -32,7 +27,6 @@ import useAuth from "../../hooks/useAuth";
 import useLogout from "../../hooks/useLogout";
 import UserContext from "../../context/UserProvider";
 import toast from "react-hot-toast";
-import UserSideBar from "../sidePanel/UserSideBar";
 
 const products = [
   {
@@ -53,7 +47,6 @@ function classNames(...classes) {
 
 export default function Header() {
   const {
-    setCurrentCategories,
     isCartOpen,
     setIsCartOpen,
     cartItemCount,
@@ -78,7 +71,6 @@ export default function Header() {
 
   useEffect(() => {
     setIsLoggedIn(!!auth?.roles?.find((role) => [5150, 2001].includes(role)));
-    // console.log(auth?.user);
   }, [auth]);
   return (
     <header className="bg-white top-0 fixed mt-0 w-full bg-opacity-20 backdrop-blur-lg z-10 ">
@@ -191,95 +183,16 @@ export default function Header() {
             <div
               onClick={() => {
                 setIsUserSideBarOpen(!isUserSideBarOpen);
+                console.log(isUserSideBarOpen);
+                
               }}
-              className="flex items-center gap-x-6 rounded-full hover:border-2 hover:border-orange-600"
+              className="flex items-center gap-x-6 rounded-full "
             >
               <UserIcon className="h-10 w-auto " />
             </div>
           )}
         </div>
       </nav>
-      <Dialog
-        className="lg:hidden"
-        open={mobileMenuOpen}
-        onClose={setMobileMenuOpen}
-      >
-        <div className="fixed inset-0 z-10" />
-        <DialogPanel className="fixed inset-y-0 right-0 z-10 w-full overflow-y-auto bg-white px-6 py-6 sm:max-w-sm sm:ring-1 sm:ring-gray-900/10">
-          <div className="flex items-center justify-between">
-            <a href="#" className="-m-1.5 p-1.5">
-              <span className="sr-only">Your Company</span>
-              <img className="h-8 w-auto" src={logo} alt="" />
-            </a>
-            <button
-              type="button"
-              className="-m-2.5 rounded-md p-2.5 text-gray-700"
-              onClick={() => setMobileMenuOpen(false)}
-            >
-              <span className="sr-only">Close menu</span>
-              <XMarkIcon className="h-6 w-6" aria-hidden="true" />
-            </button>
-          </div>
-          <div className="mt-6 flow-root">
-            <div className="-my-6 divide-y divide-gray-500/10">
-              <div className="space-y-2 py-6">
-                <Disclosure as="div" className="-mx-3">
-                  {({ open }) => (
-                    <>
-                      <DisclosureButton className="flex w-full items-center justify-between rounded-lg py-2 pl-3 pr-3.5 text-base font-semibold leading-7 text-gray-900 hover:bg-gray-50">
-                        Product
-                        <ChevronDownIcon
-                          className={classNames(
-                            open ? "rotate-180" : "",
-                            "h-5 w-5 flex-none"
-                          )}
-                          aria-hidden="true"
-                        />
-                      </DisclosureButton>
-                      <DisclosurePanel className="mt-2 space-y-2">
-                        {[...products].map((item) => (
-                          <DisclosureButton
-                            key={item.name}
-                            as="a"
-                            href={item.href}
-                            onClick={() => {
-                              setCurrentCategories(item.name.toLowerCase());
-                              setMobileMenuOpen(false);
-                            }}
-                            className="block rounded-lg py-2 pl-6 pr-3 text-sm font-semibold leading-7 text-gray-900 hover:bg-gray-50"
-                          >
-                            {item.name}
-                          </DisclosureButton>
-                        ))}
-                      </DisclosurePanel>
-                    </>
-                  )}
-                </Disclosure>
-              </div>
-              <div className="py-6">
-                {!isLoggedIn ? (
-                  <Link
-                    to={"/login"}
-                    onClick={() => setMobileMenuOpen(false)}
-                    className="text-sm font-semibold leading-6 text-gray-900"
-                  >
-                    Log in <span aria-hidden="true">&rarr;</span>
-                  </Link>
-                ) : (
-                  <div className="flex items-center gap-x-6">
-                    <img
-                      className="h-16 w-16 rounded-full hover:border-2 hover:border-orange-600"
-                      src={image}
-                      alt="profile"
-                    />
-                  </div>
-                )}
-              </div>
-            </div>
-          </div>
-        </DialogPanel>
-      </Dialog>
-      {isUserSideBarOpen && <UserSideBar />}
     </header>
   );
 }

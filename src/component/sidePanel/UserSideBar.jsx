@@ -17,7 +17,7 @@ import {
 import useAuth from "../../hooks/useAuth";
 import { NavLink } from "react-router-dom";
 
-const UserSideBar = () => {
+export default function UserSideBar() {
   const { isUserSideBarOpen, setIsUserSideBarOpen } = useContext(UserContext);
   const logout = useLogout();
   const { auth } = useAuth();
@@ -27,12 +27,12 @@ const UserSideBar = () => {
     { name: "Add Product", link: "/", icon: PlusCircleIcon },
     { name: "Notification", link: "/", icon: BellIcon },
   ];
-  console.log(auth);
+
   return (
     <Dialog
       open={isUserSideBarOpen}
       onClose={setIsUserSideBarOpen}
-      className="relative z-10"
+      className="relative z-30"
     >
       <DialogBackdrop
         transition
@@ -103,4 +103,4 @@ const UserSideBar = () => {
   );
 };
 
-export default UserSideBar;
+

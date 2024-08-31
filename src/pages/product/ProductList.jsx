@@ -15,6 +15,7 @@ import { StarIcon } from "@heroicons/react/20/solid";
 import ProductContext from "../../context/ProductProvider";
 import UserContext from "../../context/UserProvider";
 import Cart from "./Cart";
+import UserSideBar from "../../component/sidePanel/UserSideBar";
 import toast from "react-hot-toast";
 import { useNavigate } from "react-router-dom";
 function classNames(...classes) {
@@ -303,6 +304,7 @@ export default function ProductList() {
         </div>
       </Dialog>
       <Cart />
+      <UserSideBar />
     </>
   );
 }
