@@ -5,17 +5,28 @@ import ProductContext from "../../context/ProductProvider";
 import axios from "../../api/axios";
 import toast from "react-hot-toast";
 import useAuth from "../../hooks/useAuth";
+import UserContext from "../../context/UserProvider";
 
 const Checkout = () => {
   const { cartItem, handleRemoveCartItem, subTotal, setCartItem } =
     useContext(ProductContext);
+  const { userData } = useContext(UserContext);
+  const {
+    fullName: initialFullName = "",
+    shipping_detail: {
+      email: initialEmail = "",
+      phone: initialPhone = "",
+      address: initialAddress = "",
+      district: initialDistrict = "",
+    } = {},
+  } = userData || {};
   const navigate = useNavigate();
   const { auth } = useAuth();
-  const [name, setName] = useState(`${auth.fullName}`);
-  const [email, setEmail] = useState("");
-  const [phone, setPhone] = useState("");
-  const [address, setAddress] = useState("");
-  const [district, setDistrict] = useState("");
+  const [name, setName] = useState(initialFullName);
+  const [email, setEmail] = useState(initialEmail);
+  const [phone, setPhone] = useState(initialPhone);
+  const [address, setAddress] = useState(initialAddress);
+  const [district, setDistrict] = useState(initialDistrict);
   const [selectedPayment, setSelectedPayment] = useState("khalti");
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState("");
@@ -33,13 +44,8 @@ const Checkout = () => {
       setLoading(false);
       return;
     }
-    if (
-      (subTotal < 1000 || subTotal > 100000) &&
-      selectedPayment === "khalti"
-    ) {
-      setError(
-        "Total amount must be between 1000 and 10000 for Online payment"
-      );
+    if (subTotal < 1000 || subTotal > 10000) {
+      setError("Total amount must be between 1000 and 10000.");
       setLoading(false);
       return;
     }
@@ -50,11 +56,12 @@ const Checkout = () => {
       website_url: "http://localhost:5173/",
       amount: parseInt(subTotal),
       purchase_order_id: pid,
+
       purchase_order_name:
         cartItem?.length === 1
           ? cartItem?.[0]?.name
           : cartItem?.map((item) => item.name).join(", "),
-      customer_info: { name, email, phone },
+      customer_info: { name, email, phone, userId: auth.userId },
       shipping_address: { address, district },
       payment_method: selectedPayment,
     };
@@ -162,7 +169,6 @@ const Checkout = () => {
                 required
                 placeholder="Name"
                 value={name}
-                readOnly
                 className="px-4 py-3 bg-gray-100 focus:bg-transparent text-gray-800 w-full text-sm rounded-md focus:outline-blue-600"
               />
               <input
@@ -206,7 +212,7 @@ const Checkout = () => {
           </div>
           <div className="mt-8">
             <div className="grid grid-cols-1 gap-4 md:grid-cols-3">
-              <div className="rounded-lg border border-gray-200 bg-gray-50 p-4 dark:border-gray-700 dark:bg-gray-800">
+              <div className="rounded-lg border border-gray-200 bg-gray-50 p-4 ">
                 <div className="flex items-start">
                   <input
                     id="khalti-payment"
@@ -215,7 +221,7 @@ const Checkout = () => {
                     value="khalti"
                     checked={selectedPayment === "khalti"}
                     onChange={(e) => setSelectedPayment(e.target.value)}
-                    className="h-4 w-4 border-gray-300 bg-white text-primary-600 focus:ring-2 focus:ring-primary-600 dark:border-gray-600 dark:bg-gray-700 dark:ring-offset-gray-800 dark:focus:ring-primary-600"
+                    className="h-4 w-4 border-gray-300 bg-white text-primary-600 focus:ring-2 focus:ring-primary-600 "
                   />
                   <div className="ml-4 text-sm">
                     <label
@@ -230,7 +236,7 @@ const Checkout = () => {
                   </div>
                 </div>
               </div>
-              <div className="rounded-lg border border-gray-200 bg-gray-50 p-4 dark:border-gray-700 dark:bg-gray-800">
+              <div className="rounded-lg border border-gray-200 bg-gray-50 p-4 ">
                 <div className="flex items-start">
                   <input
                     id="pay-on-delivery"
@@ -240,7 +246,7 @@ const Checkout = () => {
                     value="delivery"
                     checked={selectedPayment === "delivery"}
                     onChange={(e) => setSelectedPayment(e.target.value)}
-                    className="h-4 w-4 border-gray-300 bg-white text-primary-600 focus:ring-2 focus:ring-primary-600 dark:border-gray-600 dark:bg-gray-700 dark:ring-offset-gray-800 dark:focus:ring-primary-600"
+                    className="h-4 w-4 border-gray-300 bg-white text-primary-600 focus:ring-2 focus:ring-primary-600"
                   />
                   <div className="ml-4 text-sm">
                     <label

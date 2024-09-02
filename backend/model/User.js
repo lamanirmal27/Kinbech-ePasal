@@ -22,6 +22,10 @@ const userSchema = new Schema({
     required: true,
   },
   refreshToken: String,
+ 
+  shipping_detail:{
+    type: Object
+  }
 });
 
 module.exports = mongoose.model("User", userSchema);

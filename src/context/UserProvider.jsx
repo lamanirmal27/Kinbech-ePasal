@@ -1,8 +1,11 @@
-import { createContext, useState } from "react";
+import { createContext, useEffect, useState } from "react";
+import useAuth from "../hooks/useAuth";
+import axios from "../api/axios";
 
 const UserContext = createContext(null);
 
 export const UserProvider = ({ children }) => {
+  const { auth } = useAuth();
   const [uid, setUid] = useState("");
   const [name, setName] = useState("");
   const [user, setUser] = useState("");
@@ -10,6 +13,21 @@ export const UserProvider = ({ children }) => {
   const [username, setUsername] = useState("");
   const [isLoggedIn, setIsLoggedIn] = useState(false);
   const [isUserSideBarOpen, setIsUserSideBarOpen] = useState(false);
+  const [userData, setUserData] = useState({});
+
+  useEffect(() => {
+    if (isLoggedIn) {
+      const getUserData = async () => {
+        try {
+          const response = await axios.get(`/users/${auth.userId}`);
+          setUserData(response.data);
+        } catch (error) {
+          console.error(error);
+        }
+      };
+      getUserData();
+    }
+  }, [auth.userId, isLoggedIn, userData]);
 
   return (
     <UserContext.Provider
@@ -27,6 +45,7 @@ export const UserProvider = ({ children }) => {
         username,
         uid,
         setUid,
+        userData,
       }}
     >
       {children}

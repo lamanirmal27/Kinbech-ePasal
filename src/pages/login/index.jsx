@@ -11,7 +11,8 @@ const LoginPage = () => {
   const navigate = useNavigate();
   const location = useLocation();
   const from = location.state?.from?.pathname || "/";
-  const { user, setUser, pwd, setPwd, setUid, uid } = useContext(UserContext);
+  const { user, setUser, pwd, setPwd, setUid, uid, setIsLoggedIn } =
+    useContext(UserContext);
 
   const userRef = useRef();
 
@@ -42,6 +43,7 @@ const LoginPage = () => {
       const fullName = response?.data?.fullName;
       const userId = response?.data?.id;
       setAuth({ user, pwd, accessToken, roles, fullName, userId });
+      setIsLoggedIn(true);
       setUser("");
       setPwd("");
       toast.success("Login Success");

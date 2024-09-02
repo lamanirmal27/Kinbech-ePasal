@@ -2,6 +2,7 @@ const axios = require("axios");
 const crypto = require("crypto");
 const https = require("https");
 const Payment = require("../model/PaymentSchema");
+const User = require("../model/User");
 require("dotenv").config();
 let payload = {};
 
@@ -74,7 +75,7 @@ const completePayment = async (req, res) => {
 
   try {
     const paymentInfo = await verifyPayment(pidx);
-    console.log(paymentInfo);
+
 
     if (
       paymentInfo?.status !== "Completed" ||
@@ -90,7 +91,32 @@ const completePayment = async (req, res) => {
     }
 
     const { customer_info, shipping_address } = payload;
+    const { email, phone, userId } = customer_info;
+    const { address, district } = shipping_address;
+    if (!userId) {
+      throw new Error('User ID is missing.');
+  }
+  
+  try {
+      const foundUser = await User.findOne({ _id: userId }).exec();
+  
+      if (!foundUser) {
+          throw new Error(`User with ID ${userId} not found.`);
+      }
+  
+      // Update shipping details
+      foundUser.shipping_detail = { email, phone, address, district };
+  
+      // Save the updated user document
+      await foundUser.save();
+  } catch (error) {
+      // Handle the error (e.g., log it, return a response to the client, etc.)
+      console.error('Error updating shipping details:', error);
+      throw error;
+  }
 
+
+    
     const paymentData = await Payment.create({
       customerInfo: customer_info,
       shippingAddress: shipping_address,
@@ -128,6 +154,7 @@ const deliveryCheck = async (req, res) => {
     pidx: crypto.randomBytes(5).toString("hex"),
     productId: payload?.purchase_order_id,
     amount: payload?.amount,
+    purchasedItem: payload?.purchase_order_name,
     dataFromVerificationReq: {},
     paymentGateway: "Delivery",
     status: "pending",
