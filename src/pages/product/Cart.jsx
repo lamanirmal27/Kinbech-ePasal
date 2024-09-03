@@ -8,7 +8,7 @@ import {
   DialogPanel,
   DialogTitle,
 } from "@headlessui/react";
-import { XMarkIcon } from "@heroicons/react/24/outline";
+import { XMarkIcon, TrashIcon } from "@heroicons/react/24/outline";
 import ProductContext from "../../context/ProductProvider";
 import toast from "react-hot-toast";
 import { useNavigate, Link } from "react-router-dom";
@@ -52,11 +52,18 @@ export default function Cart() {
                     <div className="ml-3 flex h-7 items-center">
                       <button
                         type="button"
+                        onClick={() => setCartItem([])}
+                        className="relative mr-5 text-gray-400 hover:text-gray-500"
+                      >
+                        <span className="absolute -inset-0.5" />
+                        <TrashIcon aria-hidden="true" className="h-6 w-6" />
+                      </button>
+                      <button
+                        type="button"
                         onClick={() => setIsCartOpen(false)}
                         className="relative -m-2 p-2 text-gray-400 hover:text-gray-500"
                       >
                         <span className="absolute -inset-0.5" />
-                        <span className="sr-only">Close panel</span>
                         <XMarkIcon aria-hidden="true" className="h-6 w-6" />
                       </button>
                     </div>
@@ -90,7 +97,7 @@ export default function Cart() {
                                 </div>
                               </div>
                               <div className="flex flex-1 items-end justify-between text-sm">
-                                {<p className="text-gray-500">Qty 1</p>}
+                                {<p className="text-gray-500">Qty {product.quantity}</p>}
 
                                 <div className="flex">
                                   <button
@@ -119,7 +126,6 @@ export default function Cart() {
                   </p>
                   <div className="mt-6">
                     <a
-                      // to={"/checkout"}
                       onClick={() => {
                         if (cartItem.length >= 1) {
                           setIsCartOpen(false);

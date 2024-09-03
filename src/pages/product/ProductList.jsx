@@ -31,18 +31,16 @@ export default function ProductList() {
     newItem,
     fashionRef,
     electoRef,
+    handleAddtoCart,
+    updateQuantity,
+    quantity,
+    setQuantity,
   } = useContext(ProductContext);
   const { isLoggedIn } = useContext(UserContext);
   const [open, setOpen] = useState(false);
   const [all, setAll] = useState(false);
   const [all1, setAll1] = useState(false);
   const navigate = useNavigate();
-
-  const handleAddtoCart = (e) => {
-    e.preventDefault();
-
-    setCartItem((prev) => [...prev, focusItem]);
-  };
 
   if (loading) {
     return (
@@ -274,18 +272,42 @@ export default function ProductList() {
                       </h3>
 
                       <form>
+                        Quantity:
+                        <input
+                          type="number"
+                          value={quantity}
+                          onChange={(e) => setQuantity(e.target.value)}
+                          min={1}
+                          className="w-12 text-center ml-5"
+                        />
                         <button
                           onClick={(e) => {
                             isLoggedIn
                               ? (e.preventDefault(),
                                 setOpen(false),
-                                handleAddtoCart(e))
+                                handleAddtoCart(focusItem),
+                                updateQuantity(focusItem.id, quantity))
                               : (e.preventDefault(),
                                 toast.error("Your need to login first"));
                           }}
                           className="mt-6 flex w-full items-center justify-center rounded-md border border-transparent bg-orange-600 px-8 py-3 text-base font-medium text-white hover:bg-orange-700 focus:outline-none focus:ring-2 focus:ring-orange-500 focus:ring-offset-2"
                         >
                           Add to cart
+                        </button>
+                        <button
+                          onClick={(e) => {
+                            isLoggedIn
+                              ? (e.preventDefault(),
+                                setOpen(false),
+                                handleAddtoCart(focusItem),
+                                updateQuantity(focusItem.id, quantity),
+                                navigate("/checkout"))
+                              : (e.preventDefault(),
+                                toast.error("Your need to login first"));
+                          }}
+                          className="mt-6 flex w-full items-center justify-center rounded-md border border-transparent bg-green-600 px-8 py-3 text-base font-medium text-white hover:bg-green-700 focus:outline-none focus:ring-2 focus:ring-orange-500 focus:ring-offset-2"
+                        >
+                          Buy now!!
                         </button>
                         <button
                           type="submit"

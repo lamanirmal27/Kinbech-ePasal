@@ -16,6 +16,41 @@ export const ProductProvider = ({ children }) => {
     return focused ? JSON.parse(focused) : [];
   });
   const [loading, setLoading] = useState(false);
+  const [quantity, setQuantity] = useState(1);
+
+  useEffect(() => {}, [cartItem]);
+
+  const handleAddtoCart = (item) => {
+    setCartItem((prevItems) => {
+      const existingItemIndex = prevItems.findIndex(
+        (cartItem) => cartItem.id === item.id
+      );
+
+      if (existingItemIndex !== -1) {
+        // Item already in cart, update the quantity
+        const updatedItems = [...prevItems];
+        updatedItems[existingItemIndex] = {
+          ...prevItems[existingItemIndex],
+          quantity: prevItems[existingItemIndex].quantity + 1,
+        };
+        return updatedItems;
+      } else {
+        // Item not in cart, add it with quantity 1
+        return [...prevItems, { ...item, quantity: 1 }];
+      }
+    });
+  };
+
+  const updateQuantity = (id, new_quantity) => {
+    setCartItem((prevItems) =>
+      prevItems.map((cartItem) =>
+        cartItem.id === id
+          ? { ...cartItem, quantity: quantity > 0 ? quantity : 1 } // Prevents quantity from being less than 1
+          : cartItem
+      )
+    );
+    setQuantity(1);
+  };
 
   const handleRemoveCartItem = (productId) => {
     setCartItem((prevCartItem) =>
@@ -55,7 +90,7 @@ export const ProductProvider = ({ children }) => {
 
   const subTotal = cartItem
     .reduce((total, item) => {
-      return total + parseFloat(item.price);
+      return total + parseFloat(item.price) * item.quantity;
     }, 0.0)
     .toFixed(2);
   const cartItemCount = cartItem.length;
@@ -82,6 +117,10 @@ export const ProductProvider = ({ children }) => {
         newItem,
         scrollToElectronics,
         scrollToFashion,
+        handleAddtoCart,
+        updateQuantity,
+        quantity,
+        setQuantity,
       }}
     >
       {children}

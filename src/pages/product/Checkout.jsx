@@ -169,6 +169,7 @@ const Checkout = () => {
                 required
                 placeholder="Name"
                 value={name}
+                onChange={(e) => setName(e.target.value)}
                 className="px-4 py-3 bg-gray-100 focus:bg-transparent text-gray-800 w-full text-sm rounded-md focus:outline-blue-600"
               />
               <input

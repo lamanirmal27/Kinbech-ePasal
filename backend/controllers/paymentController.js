@@ -6,6 +6,34 @@ const User = require("../model/User");
 require("dotenv").config();
 let payload = {};
 
+const setUserAddress = async (customer_info, shipping_address) => {
+  // const { customer_info, shipping_address } = payload;
+  // console.log(payload);
+  const { email, phone, userId } = customer_info;
+  const { address, district } = shipping_address;
+  if (!userId) {
+    throw new Error("User ID is missing.");
+  }
+
+  try {
+    const foundUser = await User.findOne({ _id: userId }).exec();
+
+    if (!foundUser) {
+      throw new Error(`User with ID ${userId} not found.`);
+    }
+
+    // Update shipping details
+    foundUser.shipping_detail = { email, phone, address, district };
+
+    // Save the updated user document
+    await foundUser.save();
+  } catch (error) {
+    // Handle the error (e.g., log it, return a response to the client, etc.)
+    console.error("Error updating shipping details:", error);
+    throw error;
+  }
+};
+
 const axiosInstance = axios.create({
   httpsAgent: new https.Agent({ rejectUnauthorized: false }), // Add this line
 });
@@ -75,10 +103,9 @@ const completePayment = async (req, res) => {
 
   try {
     const paymentInfo = await verifyPayment(pidx);
-
+    // console.log(paymentInfo);
 
     if (
-      paymentInfo?.status !== "Completed" ||
       paymentInfo?.status !== "Completed" ||
       paymentInfo.transaction_id !== transaction_id ||
       Number(paymentInfo.total_amount) !== Number(amount)
@@ -89,34 +116,8 @@ const completePayment = async (req, res) => {
         paymentInfo,
       });
     }
-
     const { customer_info, shipping_address } = payload;
-    const { email, phone, userId } = customer_info;
-    const { address, district } = shipping_address;
-    if (!userId) {
-      throw new Error('User ID is missing.');
-  }
-  
-  try {
-      const foundUser = await User.findOne({ _id: userId }).exec();
-  
-      if (!foundUser) {
-          throw new Error(`User with ID ${userId} not found.`);
-      }
-  
-      // Update shipping details
-      foundUser.shipping_detail = { email, phone, address, district };
-  
-      // Save the updated user document
-      await foundUser.save();
-  } catch (error) {
-      // Handle the error (e.g., log it, return a response to the client, etc.)
-      console.error('Error updating shipping details:', error);
-      throw error;
-  }
 
-
-    
     const paymentData = await Payment.create({
       customerInfo: customer_info,
       shippingAddress: shipping_address,
@@ -130,6 +131,8 @@ const completePayment = async (req, res) => {
       status: "success",
       paymentDate: new Date(),
     });
+
+    await setUserAddress(customer_info, shipping_address);
 
     res.json({
       success: true,
@@ -147,7 +150,7 @@ const completePayment = async (req, res) => {
 };
 
 const deliveryCheck = async (req, res) => {
-  const payload = req.body;
+  let payload = req.body;
   const paymentData = await Payment.create({
     customerInfo: payload?.customer_info,
     shippingAddress: payload?.shipping_address,
@@ -160,7 +163,7 @@ const deliveryCheck = async (req, res) => {
     status: "pending",
     paymentDate: new Date(),
   });
-
+  await setUserAddress(payload?.customer_info, payload?.shipping_address);
   res.json({
     success: true,
     message: "Order Successful",

@@ -2,16 +2,21 @@ import { useContext, useEffect, useState } from "react";
 import ProductContext from "../../context/ProductProvider";
 import UserContext from "../../context/UserProvider";
 import toast from "react-hot-toast";
+import { useNavigate } from "react-router-dom";
+import Cart from "./Cart";
 
 export default function Detials() {
-  const { focusItem, setCartItem } = useContext(ProductContext);
+  const {
+    focusItem,
+    setCartItem,
+    handleAddtoCart,
+    quantity,
+    setQuantity,
+    updateQuantity,
+  } = useContext(ProductContext);
   const { isLoggedIn } = useContext(UserContext);
   const [activeImg, setActiveImage] = useState(focusItem?.images?.[0]?.src);
-
-  const handleAddtoCart = (e) => {
-    e.preventDefault();
-    setCartItem((prev) => [...prev, focusItem]);
-  };
+  const navigate = useNavigate();
 
   useEffect(() => {
     // setActiveImage(focusItem?.images?.[0]?.src);
@@ -75,11 +80,23 @@ export default function Detials() {
               </div>
             </div>
             <h6 className="text-2xl font-semibold">$ {focusItem?.price}</h6>
+            <div>
+              Quantity:
+              <input
+                type="number"
+                value={quantity}
+                onChange={(e) => setQuantity(e.target.value)}
+                min={1}
+                className="w-12 text-center ml-5"
+              />
+            </div>
             <div className="flex flex-row items-center gap-12">
               <button
                 onClick={(e) => {
                   isLoggedIn
-                    ? (e.preventDefault(), handleAddtoCart(e))
+                    ? (e.preventDefault(),
+                      handleAddtoCart(focusItem),
+                      updateQuantity(focusItem.id, quantity))
                     : (e.preventDefault(),
                       toast.error("Your need to login first"));
                 }}
@@ -87,10 +104,24 @@ export default function Detials() {
               >
                 Add to Cart
               </button>
+              <button
+                onClick={(e) => {
+                  isLoggedIn
+                    ? (e.preventDefault(),
+                      handleAddtoCart(e),
+                      navigate("/checkout"))
+                    : (e.preventDefault(),
+                      toast.error("Your need to login first"));
+                }}
+                className="bg-green-600 text-white font-semibold py-3 px-16 rounded-xl h-full"
+              >
+                Buy now!!
+              </button>
             </div>
           </div>
         </div>
       </div>
+      <Cart/>
     </div>
   );
 }
