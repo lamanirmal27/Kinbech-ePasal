@@ -15,6 +15,7 @@ import {
   DialogTitle,
 } from "@headlessui/react";
 import useAuth from "../../hooks/useAuth";
+import toast from "react-hot-toast";
 import { NavLink } from "react-router-dom";
 
 export default function UserSideBar() {
@@ -74,6 +75,7 @@ export default function UserSideBar() {
                         to={menu.link}
                         key={i}
                         className={`group flex items-center text-sm gap-3.5 font-medium p-2 hover:bg-gray-200`}
+                        onClick={() => toast.error('We are working on it')}
                       >
                         <menu.icon className="h-5 w-5" />
                         <h2 className="font-normal ">{menu.name}</h2>

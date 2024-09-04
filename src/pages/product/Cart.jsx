@@ -1,8 +1,5 @@
-"use client";
-
-import { useContext, useEffect, useState } from "react";
+import { useContext } from "react";
 import {
-  Button,
   Dialog,
   DialogBackdrop,
   DialogPanel,
@@ -97,7 +94,11 @@ export default function Cart() {
                                 </div>
                               </div>
                               <div className="flex flex-1 items-end justify-between text-sm">
-                                {<p className="text-gray-500">Qty {product.quantity}</p>}
+                                {
+                                  <p className="text-gray-500">
+                                    Qty {product.quantity}
+                                  </p>
+                                }
 
                                 <div className="flex">
                                   <button

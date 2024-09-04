@@ -5,6 +5,8 @@
   "homepage": "https://github.com/lamanirmal27/Kinbech-ePasal",
   "type": "module",
   "scripts": {
+    "predeploy": "npm run build",
+    "deploy": "gh-pages -d dist",
     "dev:frontend": "vite",
     "dev:backend": "cd backend && npm run dev",
     "dev": "concurrently  \"npm run dev:backend\" \"npm run dev:frontend\"",
