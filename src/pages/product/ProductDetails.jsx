@@ -108,7 +108,8 @@ export default function Detials() {
                 onClick={(e) => {
                   isLoggedIn
                     ? (e.preventDefault(),
-                      handleAddtoCart(e),
+                      handleAddtoCart(focusItem),
+                      updateQuantity(focusItem.id, quantity),
                       navigate("/checkout"))
                     : (e.preventDefault(),
                       toast.error("Your need to login first"));
@@ -121,7 +122,7 @@ export default function Detials() {
           </div>
         </div>
       </div>
-      <Cart/>
+      <Cart />
     </div>
   );
 }

@@ -52,8 +52,8 @@ const Checkout = () => {
     const pid = shortid.generate();
 
     const payload = {
-      return_url: "https://kinbech-epasal-lamanirmal27.onrender.com/success",
-      website_url: "https://kinbech-epasal-lamanirmal27.onrender.com/",
+      return_url: "https://minor-project-kinbech-epasal.netlify.app/success",
+      website_url: "https://minor-project-kinbech-epasal.netlify.app/",
       amount: parseInt(subTotal),
       purchase_order_id: pid,
 
