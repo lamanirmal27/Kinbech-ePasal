@@ -1,6 +1,5 @@
 {
   "name": "client",
-  "private": true,
   "version": "0.0.0",
   "homepage": "https://github.com/lamanirmal27/Kinbech-ePasal",
   "type": "module",
@@ -15,8 +14,6 @@
     "preview": "vite preview"
   },
   "dependencies": {
-    "@emotion/react": "^11.11.4",
-    "@emotion/styled": "^11.11.5",
     "@headlessui/react": "^2.1.1",
     "@heroicons/react": "^2.1.4",
     "@mui/icons-material": "^5.16.4",
