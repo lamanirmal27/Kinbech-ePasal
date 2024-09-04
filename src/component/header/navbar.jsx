@@ -1,5 +1,4 @@
 import { useContext, useEffect, useState } from "react";
-import image from "../../assets/image.png";
 import logo from "../../assets/new-logo.png";
 import SearchItems from "../SearchItems";
 import "./animate.css";
