@@ -52,8 +52,8 @@ const Checkout = () => {
     const pid = shortid.generate();
 
     const payload = {
-      return_url: "https://minor-project-kinbech-epasal.netlify.app/success",
-      website_url: "https://minor-project-kinbech-epasal.netlify.app/",
+      return_url: "https://kinbech-e-pasal.vercel.app/success",
+      website_url: "https://kinbech-e-pasal.vercel.app/",
       amount: parseInt(subTotal),
       purchase_order_id: pid,
 
