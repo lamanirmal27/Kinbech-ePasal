@@ -14,20 +14,23 @@ export const UserProvider = ({ children }) => {
   const [isLoggedIn, setIsLoggedIn] = useState(false);
   const [isUserSideBarOpen, setIsUserSideBarOpen] = useState(false);
   const [userData, setUserData] = useState({});
+  const [dataFetched, setDataFetched] = useState(false);
 
   useEffect(() => {
-    if (isLoggedIn) {
-      const getUserData = async () => {
-        try {
-          const response = await axios.get(`/users/${auth.userId}`);
-          setUserData(response.data);
-        } catch (error) {
-          console.error(error);
-        }
-      };
+    const getUserData = async () => {
+      try {
+        const response = await axios.get(`/users/${auth.userId}`);
+        setUserData(response.data);
+        setDataFetched(true); // Set flag to true after data is fetched
+      } catch (error) {
+        console.error(error);
+      }
+    };
+
+    if (isLoggedIn && auth.userId && !dataFetched) {
       getUserData();
     }
-  }, [auth.userId, isLoggedIn, userData]);
+  }, [auth.userId, isLoggedIn, dataFetched]);
 
   return (
     <UserContext.Provider
