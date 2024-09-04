@@ -4,5 +4,6 @@ const allowedOrigins = [
   "http://localhost:5173",
   "http://localhost:5174",
   "https://lamanirmal27.github.io/Kinbech-ePasal",
+  "https://minor-project-kinbech-epasal.netlify.app",
 ];
 module.exports = allowedOrigins;
