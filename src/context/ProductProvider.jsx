@@ -1,5 +1,5 @@
 import { createContext, useEffect, useRef, useState } from "react";
-import newItem from "./itemData";
+import axios from "../api/axios";
 const ProductContext = createContext({});
 
 export const ProductProvider = ({ children }) => {
@@ -17,6 +17,22 @@ export const ProductProvider = ({ children }) => {
   });
   const [loading, setLoading] = useState(false);
   const [quantity, setQuantity] = useState(1);
+  const [newItem, setNewItem] = useState([]);
+
+  useEffect(() => {
+    const fetchProducts = async () => {
+      try {
+        const response = await axios.get("/product");
+        setNewItem(response.data);
+      } catch (err) {
+        console.error("Error fetching the products:", err);
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchProducts();
+  }, []);
 
   useEffect(() => {}, [cartItem]);
 

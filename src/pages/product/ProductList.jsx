@@ -27,7 +27,6 @@ export default function ProductList() {
     focusItem,
     setFocusItem,
     loading,
-    setCartItem,
     newItem,
     fashionRef,
     electoRef,
@@ -112,7 +111,6 @@ export default function ProductList() {
                     <div className="aspect-h-1 aspect-w-1 w-full overflow-hidden rounded-lg bg-gray-200 xl:aspect-h-8 xl:aspect-w-7">
                       <img
                         src={product.images[0].src}
-                        // alt={product.imageAlt}
                         className="h-full w-full object-cover object-center group-hover:opacity-75"
                       />
                     </div>
@@ -128,9 +126,8 @@ export default function ProductList() {
           </div>
         </div>
       </div>
-      {/* <div ref={electoRef} className="bg-white mx-auto mt-0">
+      <div ref={electoRef} className="bg-white mx-auto mt-0">
         <div className="mx-auto mt-0 max-w-2xl px-4 sm:px-6 lg:max-w-7xl lg:px-8 ">
-          <h2 className="sr-only">Products</h2>
           <span className="flex justify-between ">
             <h2 className="text-2xl font-bold tracking-tight text-gray-900">
               Electronics Items You may like
@@ -157,9 +154,9 @@ export default function ProductList() {
           </span>
 
           <div className="mt-6 grid grid-cols-1 gap-x-6 gap-y-10 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 xl:gap-x-8">
-            {newItem.slice(0, all1 ? newItem.length : 8).map(
+            {newItem.slice(0, all1 ? newItem.length : 28).map(
               (product) =>
-                product.category === "fashion" && (
+                product.category === "Electronics" && (
                   <a
                     onClick={() => {
                       setFocusItem(product);
@@ -186,7 +183,7 @@ export default function ProductList() {
             )}
           </div>
         </div>
-      </div> */}
+      </div>
       <Dialog className="relative z-10" open={open} onClose={setOpen}>
         <DialogBackdrop
           transition

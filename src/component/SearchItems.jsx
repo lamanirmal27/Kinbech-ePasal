@@ -1,10 +1,10 @@
 import React, { useContext, useCallback } from "react";
-import newItem from "../context/itemData";
-import { ReactSearchAutocomplete } from "react-search-autocomplete";
 import ProductContext from "../context/ProductProvider";
+import { ReactSearchAutocomplete } from "react-search-autocomplete";
 import { useNavigate } from "react-router-dom";
 
 function SearchItems() {
+  const {newItem} = useContext(ProductContext)
   const { setFocusItem } = useContext(ProductContext);
   const navigate = useNavigate();
 
