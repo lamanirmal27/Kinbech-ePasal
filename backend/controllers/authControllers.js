@@ -1,5 +1,6 @@
 const User = require("../model/User");
 const bcrypt = require("bcrypt");
+const { default: isThisQuarter } = require("date-fns/isThisQuarter/index");
 const jwt = require("jsonwebtoken");
 require("dotenv").config();
 
@@ -9,7 +10,7 @@ const handleLogin = async (req, res) => {
     return res
       .status(400)
       .json({ message: "Username and pawssword are required" });
-  const foundUser = await User.findOne({ username: user }).exec();
+  const foundUser = await User.findOne({ email: user }).exec();
   if (!foundUser) return res.sendStatus(401); //unauthorized
   //evaluate password
   const match = await bcrypt.compare(pwd, foundUser.password);
@@ -19,17 +20,17 @@ const handleLogin = async (req, res) => {
     const accessToken = jwt.sign(
       {
         UserInfo: {
-          username: foundUser.username,
+          email: foundUser.email,
           roles: roles,
         },
       },
       process.env.ACCESS_TOKEN_SECRET,
-      { expiresIn: "10s" }
+      { expiresIn: "1h" }
     );
     const refreshToken = jwt.sign(
-      { username: foundUser.username },
+      { email: foundUser.email },
       process.env.REFRESH_TOKEN_SECRET,
-      { expiresIn: "1h" }
+      { expiresIn: "1d" }
     );
     foundUser.refreshToken = refreshToken;
     const result = await foundUser.save();
@@ -37,10 +38,15 @@ const handleLogin = async (req, res) => {
     res.cookie("jwt", refreshToken, {
       httpOnly: true,
       sameSite: "None",
-      secure: true,
+      secure: false,
       maxAge: 24 * 60 * 60 * 1000,
     });
-    res.json({ fullName: foundUser.fullName, roles, accessToken, id: foundUser._id });
+    res.json({
+      fullName: foundUser.fullName,
+      roles,
+      accessToken,
+      id: foundUser._id,
+    });
   } else {
     return res.sendStatus(401); //unauthorized
   }

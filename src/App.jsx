@@ -13,6 +13,8 @@ import Success from "./component/Success";
 import Orders from "./pages/product/Orders";
 import DeliverySuccess from "./component/DeliverySuccess";
 import NotFound from "./pages/NotFound";
+import ForgotPassword from "./component/ForgotPassword";
+import ResetPassword from "./component/ResetPassword";
 
 const ROLES = {
   User: 2001,
@@ -24,7 +26,9 @@ function App() {
     <Routes>
       <Route path="/" element={<Layout />}>
         <Route path="login" element={<LoginPage />} />
+        <Route path="forgot-pass" element={<ForgotPassword />} />
         <Route path="register" element={<Register />} />
+        <Route path="reset-pass/:token" element={<ResetPassword />} />
         <Route path="unauthorized" element={<Unauthorized />} />
 
         <Route element={<PersistLogin />}>

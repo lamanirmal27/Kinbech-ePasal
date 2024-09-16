@@ -9,7 +9,7 @@ let payload = {};
 const setUserAddress = async (customer_info, shipping_address) => {
   // const { customer_info, shipping_address } = payload;
   // console.log(payload);
-  const { email, phone, userId } = customer_info;
+  const { phone, userId } = customer_info;
   const { address, district } = shipping_address;
   if (!userId) {
     throw new Error("User ID is missing.");
@@ -23,7 +23,7 @@ const setUserAddress = async (customer_info, shipping_address) => {
     }
 
     // Update shipping details
-    foundUser.shipping_detail = { email, phone, address, district };
+    foundUser.shipping_detail = { phone, address, district };
 
     // Save the updated user document
     await foundUser.save();
@@ -178,9 +178,54 @@ const getAllPayments = async (req, res) => {
   }
   res.json(payments);
 };
+
+const updatePayment = async (req, res) => {
+  const { status } = req.body;
+  const { id } = req.params;
+
+  // Validate request parameters
+  if (!id) {
+    return res
+      .status(400)
+      .json({ message: "Payment ID parameter is required." });
+  }
+
+  // Find the payment by ID
+  try {
+    const payment = await Payment.findOne({ productId: id }).exec();
+    if (!payment) {
+      return res
+        .status(404)
+        .json({ message: `No payment found for ID: ${id}` });
+    }
+
+    if (payment.status === "success") {
+      return res.status(400).json({
+        message: "Cannot change the status of the successfull payment",
+      });
+    }
+
+    // Update the payment status
+    payment.status = status || payment.status; // Update only if a new status is provided
+    const result = await payment.save();
+
+    // Send the updated payment data
+    res.json({
+      message: "Payment status updated successfully",
+      payment: result,
+    });
+  } catch (error) {
+    console.error(error);
+    res
+      .status(500)
+      .json({ message: "An error occurred while updating payment status" });
+  }
+};
+
 module.exports = {
   initiatePayment,
   completePayment,
   getAllPayments,
   deliveryCheck,
+  updatePayment,
 };

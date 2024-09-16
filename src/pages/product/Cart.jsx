@@ -20,10 +20,6 @@ export default function Cart() {
     handleRemoveCartItem,
   } = useContext(ProductContext);
 
-  const handleRemove = (productId) => {
-    handleRemoveCartItem(productId);
-  };
-
   const navigate = useNavigate();
 
   return (
@@ -75,7 +71,7 @@ export default function Cart() {
                         className="-my-6 divide-y divide-gray-200"
                       >
                         {cartItem.map((product) => (
-                          <li key={product.id} className="flex py-6">
+                          <li key={product._id} className="flex py-6">
                             <div className="h-24 w-24 flex-shrink-0 overflow-hidden rounded-md border border-gray-200">
                               <img
                                 alt={product?.title}
@@ -102,7 +98,9 @@ export default function Cart() {
 
                                 <div className="flex">
                                   <button
-                                    onClick={() => handleRemove(product.id)}
+                                    onClick={() =>
+                                      handleRemoveCartItem(product._id)
+                                    }
                                     className="font-medium text-orange-600 hover:text-orange-500"
                                   >
                                     Remove

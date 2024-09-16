@@ -7,6 +7,6 @@ router
   .post("/", paymentController.initiatePayment)
   .get("/", paymentController.completePayment)
   .get("/status", paymentController.getAllPayments)
-  .post("/delivery", paymentController.deliveryCheck);
-
+  .post("/delivery", paymentController.deliveryCheck)
+  .put("/:id", paymentController.updatePayment);
 module.exports = router;

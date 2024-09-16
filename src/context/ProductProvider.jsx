@@ -39,7 +39,7 @@ export const ProductProvider = ({ children }) => {
   const handleAddtoCart = (item) => {
     setCartItem((prevItems) => {
       const existingItemIndex = prevItems.findIndex(
-        (cartItem) => cartItem.id === item.id
+        (cartItem) => cartItem._id === item._id
       );
 
       if (existingItemIndex !== -1) {
@@ -60,7 +60,7 @@ export const ProductProvider = ({ children }) => {
   const updateQuantity = (id, new_quantity) => {
     setCartItem((prevItems) =>
       prevItems.map((cartItem) =>
-        cartItem.id === id
+        cartItem._id === id
           ? { ...cartItem, quantity: quantity > 0 ? quantity : 1 } // Prevents quantity from being less than 1
           : cartItem
       )
@@ -70,7 +70,7 @@ export const ProductProvider = ({ children }) => {
 
   const handleRemoveCartItem = (productId) => {
     setCartItem((prevCartItem) =>
-      prevCartItem.filter((item) => item.id !== productId)
+      prevCartItem.filter((item) => item._id !== productId)
     );
   };
 

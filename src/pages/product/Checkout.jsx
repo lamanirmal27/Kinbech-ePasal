@@ -13,8 +13,8 @@ const Checkout = () => {
   const { userData } = useContext(UserContext);
   const {
     fullName: initialFullName = "",
+    email: initialEmail = "",
     shipping_detail: {
-      email: initialEmail = "",
       phone: initialPhone = "",
       address: initialAddress = "",
       district: initialDistrict = "",
@@ -30,10 +30,6 @@ const Checkout = () => {
   const [selectedPayment, setSelectedPayment] = useState("khalti");
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState("");
-
-  const handleRemove = (productId) => {
-    handleRemoveCartItem(productId);
-  };
 
   const handlePayment = async () => {
     setLoading(true);
@@ -110,7 +106,7 @@ const Checkout = () => {
             <div className="mt-8">
               <ul role="list" className="-my-6 divide-y divide-gray-200">
                 {cartItem.map((product) => (
-                  <li key={product.id} className="flex py-6">
+                  <li key={product._id} className="flex py-6">
                     <div className="h-24 w-24 flex-shrink-0 overflow-hidden rounded-md border border-gray-200">
                       <img
                         alt={product?.title}
@@ -123,7 +119,7 @@ const Checkout = () => {
                         <h3>
                           <a href={product.href}>{product.title}</a>
                         </h3>
-                        <p className="ml-4">{`$${product.price}`}</p>
+                        <p className="ml-4">{`Rs.${product.price}`}</p>
                       </div>
                       <p className="mt-1 text-sm text-gray-500">
                         {product?.color}
@@ -135,7 +131,7 @@ const Checkout = () => {
                           </p>
                         )}
                         <button
-                          onClick={() => handleRemove(product.id)}
+                          onClick={() => handleRemoveCartItem(product._id)}
                           className="font-medium text-orange-600 hover:text-orange-500"
                         >
                           Remove
@@ -151,7 +147,7 @@ const Checkout = () => {
         <div className="border-t border-gray-200 px-4 py-6 sm:px-6">
           <div className="flex justify-between text-base font-medium text-gray-900">
             <p className="text-gray-600">Total</p>
-            <p>{`$${subTotal}`}</p>
+            <p>{`Rs.${subTotal}`}</p>
           </div>
         </div>
       </div>
@@ -260,7 +256,7 @@ const Checkout = () => {
                       id="pay-on-delivery-text"
                       className="mt-1 text-xs text-gray-500 dark:text-gray-400"
                     >
-                      +$15 payment processing fee
+                      +Rs.15 payment processing fee
                     </p>
                   </div>
                 </div>

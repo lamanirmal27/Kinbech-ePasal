@@ -3,7 +3,9 @@ import {
   MaterialReactTable,
   useMaterialReactTable,
 } from "material-react-table";
+import { MenuItem, Select } from "@mui/material";
 import useAxiosPrivate from "../../hooks/useAxiosPrivate";
+import toast from "react-hot-toast";
 
 const Inventory = () => {
   const [inventoryData, setInventoryData] = useState([]);
@@ -21,16 +23,28 @@ const Inventory = () => {
     getInventoryData();
   }, []);
 
-  useEffect(() => {
-    console.log(inventoryData);
-  }, [inventoryData]);
+  const handleStatusChange = async (id, newStatus) => {
+    try {
+      // Make API call to update status in the backend
+      await axiosPrivate.put(`/payment-khalti/${id}`, {
+        status: newStatus,
+      });
+
+      // Update the local state with the new status
+      setInventoryData((prevData) =>
+        prevData.map((item) =>
+          item.productId === id ? { ...item, status: newStatus } : item
+        )
+      );
+    } catch (err) {
+      toast.error(err.response.data.message);
+      console.error("Error updating status", err);
+    }
+  };
 
   const data = useMemo(() => {
     if (!inventoryData.length) return [];
     return inventoryData.map((item) => ({
-      name: {
-        fullName: item?.customerInfo?.name,
-      },
       transactionId: item?.transactionId,
       productId: item?.productId,
       purchasedItem: item?.purchasedItem,
@@ -45,11 +59,6 @@ const Inventory = () => {
       {
         accessorKey: "productId", // access nested data with dot notation
         header: "Order Id",
-        size: 150,
-      },
-      {
-        accessorKey: "name.fullName", // access nested data with dot notation
-        header: "Customer name",
         size: 150,
       },
       {
@@ -75,7 +84,22 @@ const Inventory = () => {
       {
         accessorKey: "statusOf",
         header: "Status",
-        size: 150,
+        size: 50,
+        Cell: ({ cell }) => {
+          const { productId, statusOf } = cell.row.original;
+          return (
+            <Select
+              value={statusOf}
+              onChange={(e) => handleStatusChange(productId, e.target.value)}
+              variant="outlined"
+              size="small"
+            >
+              <MenuItem value="pending">pending</MenuItem>
+              <MenuItem value="success">success</MenuItem>
+              <MenuItem value="failed">failed</MenuItem>
+            </Select>
+          );
+        },
       },
     ],
     []

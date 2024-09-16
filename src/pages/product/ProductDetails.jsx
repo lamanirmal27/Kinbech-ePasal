@@ -79,7 +79,7 @@ export default function Detials() {
                 <p className="text-sm text-gray-600">{focusItem.details}</p>
               </div>
             </div>
-            <h6 className="text-2xl font-semibold">$ {focusItem?.price}</h6>
+            <h6 className="text-2xl font-semibold">Rs. {focusItem?.price}</h6>
             <div>
               Quantity:
               <input

@@ -42,7 +42,8 @@ app.use("/refresh", require("./routes/refresh"));
 app.use("/logout", require("./routes/logout"));
 app.use("/users", require("./routes/api/user"));
 app.use("/payment-khalti", require("./routes/payment"));
-app.use("/product", require('./routes/api/product'))
+app.use("/product", require("./routes/api/product"));
+app.use("/forgot-password", require("./routes/reset"));
 
 app.use(verifyJWT);
 
